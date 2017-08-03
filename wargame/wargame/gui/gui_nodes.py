@@ -15,24 +15,40 @@ from wargame.gui.layout import Align
 
 
 class GuiNode(ImageNode):
-    def __init__(self, rect, image):
-        self.align = Align.LEFT
+    def __init__(self, rect, image, align=Align.NONE, fill=False):
+        # align is for when a parent decides that the area allocated to a GUI widget
+        # is smaller than the area to draw to. In all cases, the parent widget will
+        # render any outside area. This flag will override the parent alignment
+        # unless set to Align.NONE
+        # fill tells parent that it will consume all the space it can
+        self.align = align
+        self.fill = fill
         super().__init__(rect, image)
+
+    @property
+    def minimum_size(self):
+        # return the space that this widget would like to consume
+        # returns a 3-value tuple: [width, height, bool(fill)]
+        return [self.image.get_width(), self.image.get_height(), self.fill]
 
 
 class VerticalContainer(GuiNode):
     """
     Contains nodes displayed vertically
+    A container needs TWO align values.
+    The standard align is to override the parent align if space is more than required
+    The align_children setting is how to aling the child nodes
     """
-    def __init__(self, nodes, background, border=4, align=Align.LEFT, fill=False):
+    def __init__(self, nodes, background, border=4, align=Align.NONE, align_children=Align.CENTRE_LEFT, fill=False):
         self.nodes = nodes
         self.border = border
         self.background = background
-        self.fill = fill
         self.align = align
+        self.align_children = align_children
+        self.fill = fill
         image = self.build_image()
         rect = pygame.Rect(0, 0, image.get_width(), image.get_height())
-        super().__init__(rect, image)
+        super().__init__(rect, image, align=self.align, fill=self.fill)
 
     @property
     def minimum_size(self):
@@ -44,7 +60,7 @@ class VerticalContainer(GuiNode):
         # add the border
         width += self.border * 2
         height += self.border * 2
-        return (width, height)
+        return [width, height, self.fill]
 
     def update(self, time_delta):
         pass
@@ -55,11 +71,15 @@ class VerticalContainer(GuiNode):
     def handle(self, message):
         # iterate through nodes in the container
         for i in self.nodes:
-            i.handle(message)
+            if i.handle(message):
+                # handled and blocked by something
+                return True
+        # message may be passed on to other nodes
+        return False
 
     def build_image(self):
         # get all the node images
-        width, height = self.minimum_size
+        width, height, fill = self.minimum_size
         image = pygame.Surface((width, height)).convert()
         # fill with background colour
         image.fill(self.background)
