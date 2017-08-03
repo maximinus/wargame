@@ -8,6 +8,7 @@ __pycache__/
 
 # annoying mac things
 .DS_Store
+.idea/
 
 # Distribution / packaging
 .Python
