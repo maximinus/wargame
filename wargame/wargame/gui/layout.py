@@ -17,3 +17,25 @@ class Align(Enum):
     BOTTOM_CENTRE = 7
     BOTTOM_RIGHT = 8
     NONE = 9
+    LEFT = 10
+    RIGHT = 11
+    TOP = 12
+    BOTTOM = 13
+
+    @staticmethod
+    def horizontal(align):
+        if align in [Align.TOP_LEFT, Align.CENTRE_LEFT, Align.BOTTOM_LEFT]:
+            return Align.LEFT
+        if align in [Align.TOP_RIGHT, Align.CENTRE_RIGHT, Align.BOTTOM_CENTRE]:
+            return Align.RIGHT
+        # default is centre
+        return Align.CENTRE
+
+    @staticmethod
+    def vertical(align):
+        if align in [Align.TOP_LEFT, Align.TOP_CENTRE, Align.TOP_RIGHT]:
+            return Align.TOP
+        if align in [Align.CENTRE_LEFT, Align.CENTRE, Align.CENTRE_RIGHT]:
+            return Align.RIGHT
+        # default is centre
+        return Align.CENTRE

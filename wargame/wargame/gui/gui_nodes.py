@@ -31,6 +31,15 @@ class GuiNode(ImageNode):
         # returns a 3-value tuple: [width, height, bool(fill)]
         return [self.image.get_width(), self.image.get_height(), self.fill]
 
+    @staticmethod
+    def from_image(image, **kwargs):
+        """
+        Construct a GUI node given a plain image
+        (All gui nodes have an image, so this is just the simplest gui node possible)
+        """
+        rect = pygame.Rect(0, 0, image.get_width(), image.get_height())
+        return GuiNode(rect, image, **kwargs)
+
 
 class VerticalContainer(GuiNode):
     """
@@ -77,8 +86,14 @@ class VerticalContainer(GuiNode):
         # message may be passed on to other nodes
         return False
 
-    def build_image(self):
-        # get all the node images
+    def build_image(self, width=0, height=0):
+        if width == 0:
+            # no need to account for spacing
+            return self.build_simple_image()
+        return self.build_simple_image()
+
+    def build_simple_image(self):
+        # we should be the minimum size at least
         width, height, fill = self.minimum_size
         image = pygame.Surface((width, height)).convert()
         # fill with background colour
@@ -86,7 +101,25 @@ class VerticalContainer(GuiNode):
         # now draw the nodes. Account for the border
         ypos = self.border
         xpos = self.border
+        # this is the size of the largest widget
+        max_width = width - (2 * self.border)
         for i in self.nodes:
-            image.blit(i.image, (xpos, ypos))
+            widget_xpos = xpos
+            # we know the images will fit vertically, but they may differ horizontally
+            # is the image smaller?
+            if i.image.get_width() < max_width:
+                # either it goes to the left, centre or None. First let's ask the widget
+                if i.align != Align.NONE:
+                    widget_align = i.align
+                else:
+                    widget_align = self.align_children
+                direction = Align.horizontal(widget_align)
+                if direction == Align.RIGHT:
+                    widget_xpos += max_width - i.image.get_width()
+                elif direction == Align.CENTRE:
+                    # default is centre
+                    widget_xpos += (max_width - i.image.get_width()) // 2
+                # if left, we don't need to do anything
+            image.blit(i.image, (widget_xpos, ypos))
             ypos += i.image.get_height() + (self.border * 2)
         return image
