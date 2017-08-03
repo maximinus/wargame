@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 
+import os
+
 import wargame.engine
 from wargame.scene import Scene
 from wargame.nodes import RegularEvent
@@ -10,7 +12,7 @@ def handle(message):
 
 
 def game():
-    controller = wargame.engine.init()
+    controller = wargame.engine.init(os.getcwd())
     # we will add a RegularEvent object to the scene
     # this will just send a timer message to itself
     timer = RegularEvent(2000, handle)

@@ -7,6 +7,7 @@
 import pygame
 
 from wargame.loader import Resources
+from wargame.events import MessageType
 
 
 class BaseNode:
@@ -108,19 +109,15 @@ class ListenerNode(BaseNode):
 
 
 class TimerNode(BaseNode):
-    # there is always a timer for the game loop, which
-    # happens to be pygame.USEREVENT. Don't use that
-    timer_index = pygame.USEREVENT + 1
-
     def __init__(self, delay):
         """
         Set delay in milliseconds
         """
         BaseNode.__init__(self, pygame.Rect(0, 0, 0, 0))
         self.delay = delay
+        self.timer_index = MessageType.get_index()
         # start the pygame timer
-        self.timer = TimerNode.timer_index
-        TimerNode.timer_index += 1
+        self.timer = self.timer_index
         pygame.time.set_timer(self.timer, delay)
 
     def reset(self):
@@ -128,13 +125,10 @@ class TimerNode(BaseNode):
         Turn off the timer
         """
         pygame.timer.set_timer(self.timer, 0)
+        MessageType.release(self.timer_index)
 
 
 class RegularEvent(TimerNode, ListenerNode):
     def __init__(self, delay, callback):
         TimerNode.__init__(self, delay)
         ListenerNode.__init__(self, [self.timer], callback)
-
-
-class SpriteAnimationNode:
-    pass
