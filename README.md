@@ -55,6 +55,6 @@ Some example code:
     if __name__ == '__main__':
         game()
 
-Wargame-Engine can be installed via pip locally after downloading this repository: see the READNE.md file in ./wargame/.
+Wargame-Engine can be installed via pip locally after downloading this repository: see the README.md file in ./wargame/.
 
 Wargame-Engine is currently a work in progress.
