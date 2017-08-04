@@ -11,8 +11,8 @@ import pygame
 
 
 class TweenObject:
-    def __init__(self):
-        self.start = None
+    def __init__(self, start=None):
+        self.start = start
         self.time_passed = 0
 
     def update(self):
@@ -100,6 +100,19 @@ class MoveTween(TweenObject):
             return TweenResult(new=node.rect, old=current_pos, time_left=time_left)
         # no need to update anything
         return TweenResult(time_left=time_left)
+
+
+class PauseTween(TweenObject):
+    def __init__(self, delay):
+        self.delay = delay
+        super().__init__()
+
+    def update(self, time_delta):
+        self.time_passed += time_delta
+        if self.time_passed >= self.delay:
+            # finished
+            return TweenResult(time_left=self.time_passed - self.delay)
+        return(TweenResult())
 
 
 class ChainedTween(TweenObject):
