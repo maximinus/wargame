@@ -25,6 +25,12 @@ class GuiNode(ImageNode):
         self.fill = fill
         super().__init__(rect, image)
 
+    def update(self, time_delta):
+        pass
+
+    def draw_single_dirty(self, rect, screen):
+        pass
+
     @property
     def minimum_size(self):
         # return the space that this widget would like to consume
@@ -41,13 +47,7 @@ class GuiNode(ImageNode):
         return GuiNode(rect, image, **kwargs)
 
 
-class VerticalContainer(GuiNode):
-    """
-    Contains nodes displayed vertically
-    A container needs TWO align values.
-    The standard align is to override the parent align if space is more than required
-    The align_children setting is how to aling the child nodes
-    """
+class GuiContainer(GuiNode):
     def __init__(self, nodes, background, border=4, align=Align.NONE, align_children=Align.CENTRE_LEFT, fill=False):
         self.nodes = nodes
         self.border = border
@@ -58,24 +58,6 @@ class VerticalContainer(GuiNode):
         image = self.build_image()
         rect = pygame.Rect(0, 0, image.get_width(), image.get_height())
         super().__init__(rect, image, align=self.align, fill=self.fill)
-
-    @property
-    def minimum_size(self):
-        images = [x.image for x in self.nodes]
-        # get the maximum width and total height
-        width = max([x.get_width() for x in images])
-        height = sum([x.get_height() for x in images])
-        height += max(len(self.nodes) - 1, 0) * (self.border * 2)
-        # add the border
-        width += self.border * 2
-        height += self.border * 2
-        return [width, height, self.fill]
-
-    def update(self, time_delta):
-        pass
-
-    def draw_single_dirty(self, rect, screen):
-        pass
 
     def handle(self, message):
         # iterate through nodes in the container
@@ -91,6 +73,26 @@ class VerticalContainer(GuiNode):
             # no need to account for spacing
             return self.build_simple_image()
         return self.build_simple_image()
+
+
+class VerticalContainer(GuiContainer):
+    """
+    Contains nodes displayed vertically
+    A container needs TWO align values.
+    The standard align is to override the parent align if space is more than required
+    The align_children setting is how to aling the child nodes
+    """
+    @property
+    def minimum_size(self):
+        images = [x.image for x in self.nodes]
+        # get the maximum width and total height
+        width = max([x.get_width() for x in images])
+        height = sum([x.get_height() for x in images])
+        height += max(len(self.nodes) - 1, 0) * (self.border * 2)
+        # add the border
+        width += self.border * 2
+        height += self.border * 2
+        return [width, height, self.fill]
 
     def build_simple_image(self):
         # we should be the minimum size at least
@@ -117,9 +119,48 @@ class VerticalContainer(GuiNode):
                 if direction == Align.RIGHT:
                     widget_xpos += max_width - i.image.get_width()
                 elif direction == Align.CENTRE:
-                    # default is centre
                     widget_xpos += (max_width - i.image.get_width()) // 2
                 # if left, we don't need to do anything
             image.blit(i.image, (widget_xpos, ypos))
             ypos += i.image.get_height() + (self.border * 2)
+        return image
+
+
+class HorizontalContainer(GuiContainer):
+    @property
+    def minimum_size(self):
+        images = [x.image for x in self.nodes]
+        # get the total width and maximum height
+        width = sum([x.get_width() for x in images])
+        height = max([x.get_height() for x in images])
+        width += max(len(self.nodes) - 1, 0) * (self.border * 2)
+        # add the border
+        width += self.border * 2
+        height += self.border * 2
+        return [width, height, self.fill]
+
+    def build_simple_image(self):
+        width, height, fill = self.minimum_size
+        image = pygame.Surface((width, height)).convert()
+        # fill with background colour
+        image.fill(self.background)
+        # draw nodes, accounting for the border
+        xpos = self.border
+        ypos = self.border
+        max_height = height - (2 * self.border)
+        for i in self.nodes:
+            widget_ypos = ypos
+            if i.image.get_height() < max_height:
+                # where do we go?
+                if i.align != Align.NONE:
+                    widget_align = i.align
+                else:
+                    widget_align = self.align_children
+                direction = Align.vertical(widget_align)
+                if direction == Align.BOTTOM:
+                    widget_ypos += max_height - i.image.get_height()
+                elif direction == Align.CENTRE:
+                    widget_ypos += (max_width - i.image.get_width()) // 2
+            image.blit(i.image, (xpos, widget_ypos))
+            xpos += i.image.get_width() + (self.border * 2)
         return image
