@@ -9,6 +9,8 @@ from wargame.loader import Resources
 class Window(ImageNode):
     def __init__(self, contents, xpos=-1, ypos=-1):
         self.container = contents
+        # get the contents to render themselves
+        self.container.build_image()
         width = self.container.rect.width
         height = self.container.rect.height
         border = Resources.configs.get('WindowBorder')
@@ -99,7 +101,9 @@ class Window(ImageNode):
         pos = pygame.Rect(border.rects.middle_right[2], border.rects.top_middle[3], xsize, ysize)
         pygame.draw.rect(image, border.background, pos)
 
-        # now draw the contents
+        # now draw the contents. Make sure they are rendered
+        self.container.build_image()
+
         pos = (pos.x + border.border_size, pos.y + border.border_size)
         image.blit(self.container.image, pos)
         return image

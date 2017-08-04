@@ -4,13 +4,14 @@ import pygame
 
 from wargame.nodes import ImageNode
 from wargame.gui.layout import Align
+from wargame.loader import Resources
 
 
 # all nodes need a minimum_size value
 # we need 2 calls
 # 1: how much room do you need at a minimum
 # 2: draw your image with this much room
-# gien it's an array, then we go and ask each item how
+# given it's an array, then we go and ask each item how
 # much size it needs, and if it wants to fill
 
 
@@ -31,6 +32,15 @@ class GuiNode(ImageNode):
     def draw_single_dirty(self, rect, screen):
         pass
 
+    def build_image(self):
+        # this function MUST be overridden.
+        # to ensure no errors, we return a horrible red square
+        if self.image is None:
+            size = 128
+            self.image = Resources.colour_surface(size, size, (255, 0, 0))
+            self.rect = pygame.Rect(0, 0, size, size)
+            self.visible = True
+
     @property
     def minimum_size(self):
         # return the space that this widget would like to consume
@@ -48,16 +58,17 @@ class GuiNode(ImageNode):
 
 
 class GuiContainer(GuiNode):
-    def __init__(self, nodes, background, border=4, align=Align.NONE, align_children=Align.CENTRE_LEFT, fill=False):
+    def __init__(self, nodes, background, border=4, align=Align.NONE, align_children=Align.CENTRE, fill=False):
+        rect = pygame.Rect(0, 0, 0, 0)
+        super().__init__(rect, None, align=align, fill=fill)
+        # not visible until the image has been drawn
+        self.visible = False
         self.nodes = nodes
         self.border = border
         self.background = background
         self.align = align
         self.align_children = align_children
         self.fill = fill
-        image = self.build_image()
-        rect = pygame.Rect(0, 0, image.get_width(), image.get_height())
-        super().__init__(rect, image, align=self.align, fill=self.fill)
 
     def handle(self, message):
         # iterate through nodes in the container
@@ -69,10 +80,17 @@ class GuiContainer(GuiNode):
         return False
 
     def build_image(self, width=0, height=0):
+        # this routine should build the image needed to render
+        # if width and height are set, we must use this width and height
+        # width and height are ALWAYS large enough to handle all the nodes
         if width == 0:
             # no need to account for spacing
-            return self.build_simple_image()
-        return self.build_simple_image()
+            image = self.build_simple_image()
+        else:
+            image = self.build_simple_image()
+        self.rect = pygame.Rect(0, 0, image.get_width(), image.get_height())
+        self.image = image
+        return image
 
 
 class VerticalContainer(GuiContainer):
@@ -84,10 +102,10 @@ class VerticalContainer(GuiContainer):
     """
     @property
     def minimum_size(self):
-        images = [x.image for x in self.nodes]
+        sizes = [x.minimum_size for x in self.nodes]
         # get the maximum width and total height
-        width = max([x.get_width() for x in images])
-        height = sum([x.get_height() for x in images])
+        width = max([x[0] for x in sizes])
+        height = sum([x[1] for x in sizes])
         height += max(len(self.nodes) - 1, 0) * (self.border * 2)
         # add the border
         width += self.border * 2
@@ -109,7 +127,7 @@ class VerticalContainer(GuiContainer):
             widget_xpos = xpos
             # we know the images will fit vertically, but they may differ horizontally
             # is the image smaller?
-            if i.image.get_width() < max_width:
+            if i.minimum_size[0] < max_width:
                 # either it goes to the left, centre or None. First let's ask the widget
                 if i.align != Align.NONE:
                     widget_align = i.align
@@ -117,10 +135,12 @@ class VerticalContainer(GuiContainer):
                     widget_align = self.align_children
                 direction = Align.horizontal(widget_align)
                 if direction == Align.RIGHT:
-                    widget_xpos += max_width - i.image.get_width()
+                    widget_xpos += max_width - i.minimum_size[0]
                 elif direction == Align.CENTRE:
-                    widget_xpos += (max_width - i.image.get_width()) // 2
+                    widget_xpos += (max_width - i.minimum_size[0]) // 2
                 # if left, we don't need to do anything
+            if i.image is None:
+                i.build_image()
             image.blit(i.image, (widget_xpos, ypos))
             ypos += i.image.get_height() + (self.border * 2)
         return image
@@ -129,10 +149,10 @@ class VerticalContainer(GuiContainer):
 class HorizontalContainer(GuiContainer):
     @property
     def minimum_size(self):
-        images = [x.image for x in self.nodes]
+        sizes = [x.minimum_size for x in self.nodes]
         # get the total width and maximum height
-        width = sum([x.get_width() for x in images])
-        height = max([x.get_height() for x in images])
+        width = sum([x[0] for x in sizes])
+        height = max([x[1] for x in sizes])
         width += max(len(self.nodes) - 1, 0) * (self.border * 2)
         # add the border
         width += self.border * 2
@@ -150,7 +170,7 @@ class HorizontalContainer(GuiContainer):
         max_height = height - (2 * self.border)
         for i in self.nodes:
             widget_ypos = ypos
-            if i.image.get_height() < max_height:
+            if i.minimum_size[1] < max_height:
                 # where do we go?
                 if i.align != Align.NONE:
                     widget_align = i.align
@@ -158,9 +178,11 @@ class HorizontalContainer(GuiContainer):
                     widget_align = self.align_children
                 direction = Align.vertical(widget_align)
                 if direction == Align.BOTTOM:
-                    widget_ypos += max_height - i.image.get_height()
+                    widget_ypos += max_height - i.minimum_size[1]
                 elif direction == Align.CENTRE:
-                    widget_ypos += (max_width - i.image.get_width()) // 2
+                    widget_ypos += (max_height - i.minimum_size[1]) // 2
+            if i.image is None:
+                i.build_image()
             image.blit(i.image, (xpos, widget_ypos))
             xpos += i.image.get_width() + (self.border * 2)
         return image

@@ -35,7 +35,7 @@ class Align(Enum):
     def vertical(align):
         if align in [Align.TOP_LEFT, Align.TOP_CENTRE, Align.TOP_RIGHT]:
             return Align.TOP
-        if align in [Align.CENTRE_LEFT, Align.CENTRE, Align.CENTRE_RIGHT]:
-            return Align.RIGHT
+        if align in [Align.BOTTOM_LEFT, Align.BOTTOM_CENTRE, Align.BOTTOM_RIGHT]:
+            return Align.BOTTOM
         # default is centre
         return Align.CENTRE
