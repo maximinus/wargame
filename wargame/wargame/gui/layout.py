@@ -21,6 +21,8 @@ class Align(Enum):
     RIGHT = 11
     TOP = 12
     BOTTOM = 13
+    AROUND = 14
+    BETWEEN = 15
 
     @staticmethod
     def horizontal(align):
@@ -33,9 +35,9 @@ class Align(Enum):
 
     @staticmethod
     def vertical(align):
-        if align in [Align.TOP_LEFT, Align.TOP_CENTRE, Align.TOP_RIGHT]:
+        if align in [Align.TOP_LEFT, Align.TOP_CENTRE, Align.TOP_RIGHT, Align.TOP]:
             return Align.TOP
-        if align in [Align.BOTTOM_LEFT, Align.BOTTOM_CENTRE, Align.BOTTOM_RIGHT]:
+        if align in [Align.BOTTOM_LEFT, Align.BOTTOM_CENTRE, Align.BOTTOM_RIGHT, Align.BOTTOM]:
             return Align.BOTTOM
         # default is centre
         return Align.CENTRE

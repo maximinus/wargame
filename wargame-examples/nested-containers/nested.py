@@ -16,17 +16,22 @@ def game():
     # let's have a background
     background = ImageNode.from_image(0, 0, 'sprites.wallpaper')
     # we want a window to display with a HorizontalContainer
-    node1 = GuiNode.from_image(Resources.colour_surface(100, 100, (200, 32, 32)))
-    node2 = GuiNode.from_image(Resources.colour_surface(100, 50, (32, 200, 32)))
-    node3 = GuiNode.from_image(Resources.colour_surface(100, 50, (32, 32, 200)))
-    container1 = VerticalContainer([node1, node2, node3], (214, 214, 214), align=Align.TOP)
+    node1 = GuiNode.from_image(Resources.colour_surface(100, 30, (200, 32, 32)))
+    node2 = GuiNode.from_image(Resources.colour_surface(100, 30, (32, 200, 32)))
+    node3 = GuiNode.from_image(Resources.colour_surface(100, 30, (32, 32, 200)))
+    c1 = VerticalContainer([node1, node2, node3], (214, 214, 214), align_children=Align.TOP)
 
     node6 = GuiNode.from_image(Resources.colour_surface(100, 50, (32, 32, 200)))
     node5 = GuiNode.from_image(Resources.colour_surface(100, 50, (32, 200, 32)))
     node4 = GuiNode.from_image(Resources.colour_surface(100, 100, (200, 32, 32)))
-    container2 = VerticalContainer([node6, node5, node4], (214, 214, 214), align=Align.TOP)
+    c2 = VerticalContainer([node6, node5, node4], (214, 214, 214), align_children=Align.TOP)
 
-    hcontainer = HorizontalContainer([container1, container2], (214, 214, 214), align=Align.CENTRE)
+    node7 = GuiNode.from_image(Resources.colour_surface(100, 30, (200, 32, 32)))
+    node8 = GuiNode.from_image(Resources.colour_surface(100, 30, (32, 200, 32)))
+    node9 = GuiNode.from_image(Resources.colour_surface(100, 30, (32, 32, 200)))
+    c3 = VerticalContainer([node7, node8, node9], (214, 214, 214), align_children=Align.TOP)
+
+    hcontainer = HorizontalContainer([c1, c2, c3], (214, 214, 214), align_children=Align.TOP)
     window = Window(hcontainer)
 
     # add the window to a scene
