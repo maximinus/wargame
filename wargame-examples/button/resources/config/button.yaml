@@ -1,0 +1,30 @@
+# data for how to draw a window
+
+# should start with what we are
+meta:
+    type: ButtonBorder
+
+data:
+    # a name for the style
+    name: normal
+    # base image
+    image: gui.button
+
+    # how do I split up the image?
+    rects:
+        top_left: [0, 0, 3, 3]
+        top_middle: [3, 0, 3, 3]
+        top_right: [6, 0, 3, 3]
+        middle_left: [0, 3, 3, 3]
+        middle_right: [6, 3, 3, 3]
+        bottom_left: [0, 6, 3, 3]
+        bottom_middle: [3, 6, 3, 3]
+        bottom_right: [6, 6, 3, 3]
+    # colour of background
+    background: [214, 214, 214]
+    dimensions:
+        extra-width: 6
+        extra-height: 6
+        min-width: 9
+        min-height: 9
+    border_size: 0

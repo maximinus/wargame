@@ -6,7 +6,7 @@ from wargame.nodes import ImageNode
 from wargame.loader import Resources
 
 
-class Window(ImageNode):
+class Container(ImageNode):
     def __init__(self, contents, xpos=-1, ypos=-1):
         self.container = contents
         # get the contents to render themselves
@@ -107,3 +107,7 @@ class Window(ImageNode):
         pos = (pos.x + border.border_size, pos.y + border.border_size)
         image.blit(self.container.image, pos)
         return image
+
+
+class Window(Container):
+    pass

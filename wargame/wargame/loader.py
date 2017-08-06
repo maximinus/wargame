@@ -46,6 +46,7 @@ class ResourceHandler:
         Do not doing any image creation or loading
         """
         self.images = {}
+        self.fonts = {}
         self.path = '.'
         self.error_image = None
         self.configs = None
@@ -57,6 +58,7 @@ class ResourceHandler:
             return
         self.path = os.path.join(resources, 'resources')
         self.load_images(os.path.join(self.path, 'gfx'))
+        self.load_fonts(os.path.join(self.path, 'gfx'))
         self.configs = ConfigLoader()
         self.configs.load(os.path.join(self.path, 'config'))
 
@@ -66,6 +68,9 @@ class ResourceHandler:
             path = os.path.join(gfx_folder, folder)
             if os.path.exists(path):
                 self.load_image_folder(path, folder)
+
+    def load_fonts(self, font_folder):
+    
 
     def load_image_folder(self, folder, namespace):
         # loop through files in given folder

@@ -59,6 +59,21 @@ class GuiNode(ImageNode):
         return GuiNode(rect, image, **kwargs)
 
 
+class Border(GuiNode):
+    """
+    When you need to draw a border around something,
+    i.e. windows, buttons, menus etc...
+    """
+    # we need to make sure minimum size and the image are the ones changed
+    @property
+    def minimum_size(self):
+        pass
+
+    @property
+    def build_image(self, width=0, height=0):
+        pass
+
+
 class GuiContainer(GuiNode):
     def __init__(self, nodes, background, border=4, align_children=Align.CENTRE):
         rect = pygame.Rect(0, 0, 0, 0)
