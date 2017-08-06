@@ -166,9 +166,6 @@ class VerticalContainer(GuiContainer):
                 # everything at the top
                 node_image = self.build_simple_image()
                 image.blit(node_image, (0, 0))
-
-                print(image, node_image)
-
                 return image
         else:
             # must be same size

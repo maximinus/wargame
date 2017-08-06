@@ -59,10 +59,10 @@ def init(resource_directory=None):
     pygame.init()
     # do system checks
     if not pygame.font:
-        print('Error: Fonts disabled')
+        logging.error('Error: Fonts disabled')
         return False
     if not pygame.mixer:
-        print('Error: Sound disabled')
+        logging.error('Error: Sound disabled')
         return False
 
     controller = HexGameController(resource_directory)

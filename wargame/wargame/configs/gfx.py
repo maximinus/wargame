@@ -20,7 +20,13 @@ class WindowBorderConfig(BaseConfig):
     name = 'WindowBorder'
 
 
-CONFIGS = {'WindowBorder': WindowBorderConfig}
+class ButtonConfig(BaseConfig):
+    members = ['image_rects', 'image', 'name', 'dimensions', 'background']
+    name = 'ButtonBorder'
+
+
+CONFIGS = {'WindowBorder': WindowBorderConfig,
+           'ButtonBorder': ButtonConfig}
 
 
 def get_config_item(data, path):
@@ -31,7 +37,7 @@ def get_config_item(data, path):
         logging.error('Error: No type in {0}'.format(path))
         return
     if data['meta']['type'] not in CONFIGS:
-        logging.error('Unkown type {0} in {1}'.format(data['meta']['type'], path))
+        logging.error('Unknown type {0} in {1}'.format(data['meta']['type'], path))
         return
     if 'data' not in data:
         logging.error('No data given in {0}'.format(path))
