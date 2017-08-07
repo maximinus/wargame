@@ -58,7 +58,7 @@ class ResourceHandler:
             return
         self.path = os.path.join(resources, 'resources')
         self.load_images(os.path.join(self.path, 'gfx'))
-        self.load_fonts(os.path.join(self.path, 'gfx'))
+        self.load_fonts(os.path.join(self.path, 'fonts'))
         self.configs = ConfigLoader()
         self.configs.load(os.path.join(self.path, 'config'))
 
@@ -70,7 +70,12 @@ class ResourceHandler:
                 self.load_image_folder(path, folder)
 
     def load_fonts(self, font_folder):
-    
+        for font_file in os.listdir(font_folder):
+            path = os.path.join(font_folder, font_file)
+            try:
+                font = pygame.font.Font(path, 12)
+            except OSError:
+                logging.error('Could not load font {0}'.format(path))
 
     def load_image_folder(self, folder, namespace):
         # loop through files in given folder

@@ -25,8 +25,14 @@ class ButtonConfig(BaseConfig):
     name = 'ButtonBorder'
 
 
+class FontConfig(BaseConfig):
+    members = ['fonts', 'default']
+    name = 'Fonts'
+
+
 CONFIGS = {'WindowBorder': WindowBorderConfig,
-           'ButtonBorder': ButtonConfig}
+           'ButtonBorder': ButtonConfig,
+           'Fonts': FontConfig}
 
 
 def get_config_item(data, path):

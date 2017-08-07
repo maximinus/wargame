@@ -1,0 +1,13 @@
+# yaml font file
+
+meta:
+    type: ButtonBorder
+
+data:
+  fonts:
+    NotoSans:
+        file: NotoSans.ttf
+        size: 12
+
+  default:
+    NotoSans
