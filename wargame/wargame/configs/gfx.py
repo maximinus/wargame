@@ -50,6 +50,7 @@ def get_config_item(data, path):
         return
 
     try:
-        return CONFIGS[data['meta']['type']](data['data'], path)
+        config = CONFIGS[data['meta']['type']](data['data'], path)
+        return config
     except ValueError:
         return

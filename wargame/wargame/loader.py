@@ -56,9 +56,9 @@ class ResourceHandler:
             return
         self.path = os.path.join(resources, 'resources')
         self.load_images(os.path.join(self.path, 'gfx'))
-        self.load_fonts(os.path.join(self.path, 'fonts'))
         self.configs = ConfigLoader()
         self.configs.load(os.path.join(self.path, 'config'))
+        self.load_fonts(os.path.join(self.path, 'fonts'))
 
     def load_images(self, gfx_folder):
         for folder in ['hexes', 'sprites', 'gui']:
@@ -68,12 +68,16 @@ class ResourceHandler:
                 self.load_image_folder(path, folder)
 
     def load_fonts(self, font_folder):
-        for font_file in os.listdir(font_folder):
-            path = os.path.join(font_folder, font_file)
+        font_config = self.configs.get('Fonts')
+        for i in font_config.data.fonts:
+            filepath = os.path.join(font_folder, font_config.data.fonts[i].file)
+            size = font_config.data.fonts[i].size
             try:
-                font = pygame.font.Font(path, 12)
+                self.fonts[i] = pygame.font.Font(filepath, size)
             except OSError:
                 logger.error('Could not load font {0}'.format(path))
+        # store a standard font
+        self.fonts['default'] = fonts[font_config.data.default]
 
     def load_image_folder(self, folder, namespace):
         # loop through files in given folder
@@ -86,13 +90,6 @@ class ResourceHandler:
             except pygame.error:
                 logger.error('Could not load image {0}'.format(path))
 
-    def get_image(self, image_name):
-        try:
-            return self.images[image_name]
-        except KeyError:
-            logger.error('No image name {0}'.format(image_name))
-            return self.error_image
-
     def build_error_image(self):
         """
         The image to return if we cannot find what was asked for
@@ -100,6 +97,21 @@ class ResourceHandler:
         self.error_image = pygame.Surface((32, 32)).convert()
         # flood fill with red
         self.error_image.fill((255, 0, 0))
+
+    def get_image(self, image_name):
+        try:
+            return self.images[image_name]
+        except KeyError:
+            logger.error('No image name {0}'.format(image_name))
+            return self.error_image
+
+    def get_font(self, name='default'):
+        try:
+            font = self.fonts[name]
+        except KeyError:
+            logger.warn('Asked for missing font {0} in resources'.format(name))
+            font = self.fonts['default']
+        return font
 
     def colour_surface(self, width, height, colour):
         surface = pygame.Surface((width, height)).convert()

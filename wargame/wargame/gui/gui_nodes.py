@@ -59,18 +59,13 @@ class GuiNode(ImageNode):
         return GuiNode(rect, image, **kwargs)
 
 
-class Border(GuiNode):
+class Label(GuiNode):
     """
-    When you need to draw a border around something,
-    i.e. windows, buttons, menus etc...
+    A label is a single piece of text on one line, with a plain background
     """
-    # we need to make sure minimum size and the image are the ones changed
-    @property
-    def minimum_size(self):
-        pass
-
-    @property
-    def build_image(self, width=0, height=0):
+    def __init__(self, text, align=Align.NONE, fill=False):
+        # we need to make a rect and an image
+        # let's start with the image
         pass
 
 
