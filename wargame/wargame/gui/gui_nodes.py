@@ -36,7 +36,7 @@ class GuiNode(ImageNode):
 
     def build_image(self, width=0, height=0):
         # this function MUST be overridden.
-        # to ensure no errors, we return a horrible red square
+        # to ensure no errors, we set a horrible red square
         if self.image is None:
             size = 128
             self.image = Resources.colour_surface(size, size, (255, 0, 0))
@@ -63,9 +63,22 @@ class Label(GuiNode):
     """
     A label is a single piece of text on one line, with a plain background
     """
-    def __init__(self, text, align=Align.NONE, fill=False):
+    def __init__(self, text, colour, background, border=4, align=Align.NONE, fill=False):
         # we need to make a rect and an image
         # let's start with the image
+        font = Resources.get_font()
+        label = font.render(text, True, colour, background).convert()
+        rect = pygame.Rect(0, 0, label.get_width(), label.get_height())
+        if border > 0:
+            width = rect.width + (2 * border)
+            height = rect.height + (2 * border)
+            image = pygame.Surface((width, height)).convert()
+            image.fill(background)
+            image.blit(label, (border, border))
+            label = image
+        super().__init__(rect, label, align, fill)
+
+    def build_image(self):
         pass
 
 

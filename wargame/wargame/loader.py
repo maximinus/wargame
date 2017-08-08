@@ -69,15 +69,15 @@ class ResourceHandler:
 
     def load_fonts(self, font_folder):
         font_config = self.configs.get('Fonts')
-        for i in font_config.data.fonts:
-            filepath = os.path.join(font_folder, font_config.data.fonts[i].file)
-            size = font_config.data.fonts[i].size
+        for i in font_config.fonts:
+            filepath = os.path.join(font_folder, font_config.fonts[i].file)
+            size = font_config.fonts[i].size
             try:
                 self.fonts[i] = pygame.font.Font(filepath, size)
             except OSError:
-                logger.error('Could not load font {0}'.format(path))
+                logger.error('Could not load font {0}'.format(filepath))
         # store a standard font
-        self.fonts['default'] = fonts[font_config.data.default]
+        self.fonts['default'] = self.fonts[font_config.default]
 
     def load_image_folder(self, folder, namespace):
         # loop through files in given folder
