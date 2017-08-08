@@ -2,17 +2,21 @@
 
 import os
 import sys
-import logging
 import pygame
+import logzero
+from logzero import logger
 
 from wargame.loader import Resources
 from wargame.scheduler import MessageSystem
 from wargame.events import MessageType
-logger = logging.getLogger(__name__)
+from wargame.constants import VERSION
 
 
 class HexGameController:
     def __init__(self, resource_directory):
+        self.setup_logging(resource_directory)
+        logger.info('Starting Wargame v{0}'.format(VERSION))
+        system_checks()
         self.screen = pygame.display.set_mode((640, 480), pygame.DOUBLEBUF)
         pygame.display.set_caption('HexGame')
         Resources.load_resources(resource_directory, self.screen)
@@ -20,11 +24,10 @@ class HexGameController:
         self.scenes = {}
         self.current_scene = None
         self.last_tick = 0
-        self.setup_logging(resource_directory)
 
     def setup_logging(self, resource_directory):
         log_file = os.path.join(resource_directory, 'resources', 'wargame.log')
-        logging.basicConfig(filename=log_file, level=logging.DEBUG)
+        logzero.logfile(log_file)
 
     def add_scene(self, name, scene):
         self.scenes[name] = scene
@@ -33,7 +36,7 @@ class HexGameController:
         try:
             self.current_scene = self.scenes[scene_name]
         except KeyError:
-            logging.error('Error: No such scene "{0}"'.format(scene_name))
+            logger.error('Error: No such scene "{0}"'.format(scene_name))
             return False
         self.current_scene.draw()
         pygame.display.flip()
@@ -48,22 +51,21 @@ class HexGameController:
     def handle(self, message):
         # exit?
         if message.message_id == MessageType.EXIT_GAME:
-            logging.info('Exiting')
+            logger.info('Exiting Wargame')
             sys.exit(True)
         # send message to scene if required
         return self.current_scene.handle(message)
 
-
-def init(resource_directory=None):
-    logging.info('Starting')
-    pygame.init()
+def system_checks():
     # do system checks
     if not pygame.font:
-        logging.error('Error: Fonts disabled')
-        return False
+        logger.error('Error: Fonts disabled')
+        sys.exit(False)
     if not pygame.mixer:
-        logging.error('Error: Sound disabled')
-        return False
+        logger.error('Error: Sound disabled')
+        sys.exit(False)
 
+def init(resource_directory=None):
+    pygame.init()
     controller = HexGameController(resource_directory)
     return controller

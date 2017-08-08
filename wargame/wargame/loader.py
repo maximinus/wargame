@@ -1,14 +1,12 @@
 #!/usr/bin/env python3
 
 import os
-from pathlib import PurePath
 import pygame
 import yaml
+from pathlib import PurePath
+from logzero import logger
 
 from wargame.configs.gfx import get_config_item
-
-import logging
-logger = logging.getLogger(__name__)
 
 
 class ConfigLoader:
@@ -75,7 +73,7 @@ class ResourceHandler:
             try:
                 font = pygame.font.Font(path, 12)
             except OSError:
-                logging.error('Could not load font {0}'.format(path))
+                logger.error('Could not load font {0}'.format(path))
 
     def load_image_folder(self, folder, namespace):
         # loop through files in given folder
@@ -86,13 +84,13 @@ class ResourceHandler:
                 image = pygame.image.load(path).convert_alpha()
                 self.images['{0}.{1}'.format(namespace, name)] = image
             except pygame.error:
-                logging.error('Could not load image {0}'.format(path))
+                logger.error('Could not load image {0}'.format(path))
 
     def get_image(self, image_name):
         try:
             return self.images[image_name]
         except KeyError:
-            logging.error('No image name {0}'.format(image_name))
+            logger.error('No image name {0}'.format(image_name))
             return self.error_image
 
     def build_error_image(self):

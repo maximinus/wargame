@@ -5,7 +5,7 @@ import pygame
 # for us to be able to tween something, it must be some displayable
 # image. That means, it needs an image and a rect
 # tweens are NOT updated every X seconds or so
-# they are merely sent the valus of the time NOW
+# they are merely sent the value of the time NOW
 # So you record the time you get on the FIRST update,
 # and use that to figure out what to update
 
