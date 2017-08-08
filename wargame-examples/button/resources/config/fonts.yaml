@@ -1,7 +1,7 @@
 # yaml font file
 
 meta:
-    type: ButtonBorder
+    type: Fonts
 
 data:
   fonts:
