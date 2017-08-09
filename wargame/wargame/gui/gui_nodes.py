@@ -78,7 +78,7 @@ class Label(GuiNode):
             label = image
         super().__init__(rect, label, align, fill)
 
-    def build_image(self):
+    def build_image(self, width=0, height=0):
         pass
 
 

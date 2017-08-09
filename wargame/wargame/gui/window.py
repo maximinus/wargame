@@ -4,6 +4,7 @@ import pygame
 
 from wargame.nodes import ImageNode
 from wargame.loader import Resources
+from wargame.gui.gui_nodes import Label
 
 
 class BorderWidget(ImageNode):
@@ -12,6 +13,7 @@ class BorderWidget(ImageNode):
     def __init__(self, contents, xpos=-1, ypos=-1):
         self.container = contents
         # get the contents to render themselves
+        self.container.build_image()
         border = Resources.configs.get(self.border_config)
         image = self.build_widget_display(border, self.container.image)
         if xpos < 0:
@@ -32,6 +34,9 @@ class BorderWidget(ImageNode):
 
     def build_widget_display(self, border, base_image):
         self.container.build_image()
+
+
+
         return add_border(base_image, border, Resources.get_image(border.image))
 
     def build_image(self):
@@ -50,6 +55,10 @@ class Button(BorderWidget):
     A gui widget with the border of a Button
     """
     border_config = 'ButtonBorder'
+
+    def __init__(self, text):
+        label = Label(text, (0, 0, 0), (214, 214, 214))
+        super().__init__(label, xpos=0, ypos=0)
 
 
 def add_border(base_image, border, border_image):
