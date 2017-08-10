@@ -56,6 +56,7 @@ class HexGameController:
         # send message to scene if required
         return self.current_scene.handle(message)
 
+
 def system_checks():
     # do system checks
     if not pygame.font:
@@ -64,6 +65,7 @@ def system_checks():
     if not pygame.mixer:
         logger.error('Error: Sound disabled')
         sys.exit(False)
+
 
 def init(resource_directory=None):
     pygame.init()

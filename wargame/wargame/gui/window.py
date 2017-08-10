@@ -34,9 +34,6 @@ class BorderWidget(ImageNode):
 
     def build_widget_display(self, border, base_image):
         self.container.build_image()
-
-
-
         return add_border(base_image, border, Resources.get_image(border.image))
 
     def build_image(self):

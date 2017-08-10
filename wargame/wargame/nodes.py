@@ -79,6 +79,11 @@ class ImageNode(BaseNode):
         if rects.new is not None:
             self.draw_single_dirty(rects.new, screen)
 
+    def build_image(self, width=0, height=0):
+        # called if the image needs to be drawn
+        # override this for child nodes with complex requirements
+        pass
+
     @staticmethod
     def from_image(xpos, ypos, image):
         image = Resources.get_image(image)

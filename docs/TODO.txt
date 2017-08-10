@@ -1,0 +1,44 @@
+
+Wargame Engine
+==============
+
+This document is true as of v 0.1.0
+
+
+Process of startup. Let's imagine the following startup:
+
+1: You create some widgets
+2: You add them to a window
+3: You add the window to a scene
+4: You start the scene
+
+How are things drawn?
+
+
+The engine tells the scene to draw itself.
+The scene loops through it's nodes and draws them.
+
+This means that the window has an an image at that point.
+
+When the window is created, it asks it's container to draw itself.
+A container is exactly that: a Horizontal or Vertical.
+We could have an ImageNode here as well.
+
+As the container builds the image, it asks the widget to draw itself if the image is None.
+In a gui, all ImageNodes have an image already, but they contain a simple build_image() that can be overwritten.
+
+How is spacing done?
+
+A container merely puts extra content outside the widget.
+
+A container is able to ask the question "what is my minimum size".
+When a container is asked to render itself, it receives the size it can render to. The smallest size passed will be the minimum size it cn be rendered to.
+
+Therefore there are 2 possibilities:
+
+    1: The size is the minimum. In this case, just render all the node children.
+    2: We have more space. In this case, the container will fill all the space.
+
+If we have more space, it may or may not get consumed by the child nodes. So we drill down those first.
+
+
