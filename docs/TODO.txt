@@ -25,14 +25,24 @@ A container is exactly that: a Horizontal or Vertical.
 We could have an ImageNode here as well.
 
 As the container builds the image, it asks the widget to draw itself if the image is None.
+* Maybe make the image a property and if we don't have it, get it
+* Well, there's 2 things I might ask:
+*   Go and build your image with this size
+*   Please give me your image
+* Trouble is, we assume an ImageNode is the same as a GuiNode
+*   Why not provide a really easy GuiImage?
+
 In a gui, all ImageNodes have an image already, but they contain a simple build_image() that can be overwritten.
+* It doesn't need this if we have a special GuiImage
 
 How is spacing done?
 
-A container merely puts extra content outside the widget.
+A container merely puts extra content outside the widget(s).
 
 A container is able to ask the question "what is my minimum size".
+* All GUI nodes can answer this question
 When a container is asked to render itself, it receives the size it can render to. The smallest size passed will be the minimum size it cn be rendered to.
+* If Images are GuiImages, they can all do this
 
 Therefore there are 2 possibilities:
 
@@ -41,4 +51,29 @@ Therefore there are 2 possibilities:
 
 If we have more space, it may or may not get consumed by the child nodes. So we drill down those first.
 
+The thing about a container is, if the child nodes do not fill the space required, they are forced to do it.
 
+Therefore, a GUI must contist of a single widet, which is either a GUI widger or a GUI continer.
+Both of these are guarenteed to fill the full space they request.
+
+How the child nodes are spaced is the responsibilty of the container.
+A GUI node can indicate it wants to fill as much space as possible.
+In this case, it can indicate where it must be positioned in this space.
+But the container still renders.
+
+Look at possibilities:
+
+> Widgets take all space
+    (they do, or >0 widgets want to fill)
+    if none want to fill
+        draw in order based on ALIGN_CHILDREN
+    else
+        share extra space amongst all fillers
+        draw fill widgets in place due to their ALIGN
+        draw in order
+
+> Widgets do not take all space
+    Space out based on ALIGN_CHILDREN
+        place in order, fill space in some direction
+        put space between nodes
+        put space around nodes
