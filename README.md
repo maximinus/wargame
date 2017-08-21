@@ -4,7 +4,7 @@
 
 The wargame engine is for building cross-platform 2D based tactical and strategy games.
 
-It uses Pygame as it's input and rendering engine.
+It uses Pygame as an input and rendering engine.
 
 A tree of nodes is used as a viewport, with each node usually representing either a view of sprites, or the sprites themselves.
 
