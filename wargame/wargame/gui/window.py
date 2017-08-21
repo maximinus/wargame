@@ -4,7 +4,7 @@ import pygame
 
 from wargame.nodes import ImageNode
 from wargame.loader import Resources
-from wargame.gui.gui_nodes import Label
+from wargame.gui.gui_nodes import GuiLabel
 
 
 class BorderWidget(ImageNode):
@@ -54,7 +54,7 @@ class Button(BorderWidget):
     border_config = 'ButtonBorder'
 
     def __init__(self, text):
-        label = Label(text, (0, 0, 0), (214, 214, 214))
+        label = GuiLabel(text, (0, 0, 0), (214, 214, 214))
         super().__init__(label, xpos=0, ypos=0)
 
 

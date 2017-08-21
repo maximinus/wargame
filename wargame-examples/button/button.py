@@ -5,7 +5,8 @@ import os
 import wargame.engine
 from wargame.scene import Scene
 from wargame.nodes import ImageNode
-from wargame.gui.gui_nodes import HorizontalContainer, VerticalContainer
+from wargame.loader import Resources
+from wargame.gui.gui_nodes import HorizontalContainer, VerticalContainer, GuiImage
 from wargame.gui.window import Window, Button
 
 
@@ -20,7 +21,7 @@ def game():
     button3 = Button('By Chris')
     container1 = HorizontalContainer([button1, button2, button3], background=(214, 214, 214))
     # and a logo
-    logo = ImageNode.from_image(0, 0, 'sprites.logo')
+    logo = GuiImage.from_image('sprites.logo')
     container2 = VerticalContainer([logo, container1], background=(214, 214, 214))
     window = Window(container2)
 

@@ -59,7 +59,7 @@ class GuiNode(ImageNode):
         return GuiNode(rect, image, **kwargs)
 
 
-class Label(GuiNode):
+class GuiLabel(GuiNode):
     """
     A label is a single piece of text on one line, with a plain background
     """
@@ -80,6 +80,24 @@ class Label(GuiNode):
 
     def build_image(self, width=0, height=0):
         pass
+
+
+class GuiImage(GuiNode):
+    """
+    An image is a just that, a simple image
+    """
+    def __init__(self, image, align=Align.NONE):
+        rect = pygame.Rect(0, 0, image.get_width(), image.get_height())
+        super().__init__(rect, image, align, False)
+
+    @staticmethod
+    def from_image_node(node):
+        return GuiImage(node.image)
+
+    @staticmethod
+    def from_image(image_name):
+        image = Resources.get_image(image_name)
+        return GuiImage(image)
 
 
 class GuiContainer(GuiNode):
