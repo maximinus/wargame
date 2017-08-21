@@ -5,7 +5,6 @@ import os
 import wargame.engine
 from wargame.scene import Scene
 from wargame.nodes import ImageNode
-from wargame.loader import Resources
 from wargame.gui.gui_nodes import HorizontalContainer, VerticalContainer, GuiImage
 from wargame.gui.window import Window, Button
 
