@@ -12,7 +12,8 @@ def handle(message):
 
 
 def game():
-    controller = wargame.engine.init(os.getcwd())
+    resources = os.path.join(os.getcwd(), '../')
+    controller = wargame.engine.init(resources)
     # we will add a RegularEvent object to the scene
     # this will just send a timer message to itself
     timer = RegularEvent(2000, handle)

@@ -13,7 +13,8 @@ from wargame.tweens import FlashTween
 
 def game():
     # start the engine. It needs to know where the resources file is
-    controller = wargame.engine.init(os.getcwd())
+    resources = os.path.join(os.getcwd(), '../')
+    controller = wargame.engine.init(resources)
     # add a sprite. We need a position, and image
     sprite = ImageNode.from_image(100, 100, 'sprites.soldier')
 
