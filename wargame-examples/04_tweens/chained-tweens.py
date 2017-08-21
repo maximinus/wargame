@@ -13,7 +13,8 @@ from wargame.tweens import ChainedTween, MoveTween
 
 
 def game():
-    controller = wargame.engine.init(os.getcwd())
+    resources = os.path.join(os.getcwd(), '../')
+    controller = wargame.engine.init(resources)
     # add a sprite from an image
     sprite = ImageNode.from_image(100, 100, 'sprites.soldier')
 
