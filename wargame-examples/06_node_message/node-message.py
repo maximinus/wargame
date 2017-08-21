@@ -68,7 +68,8 @@ class NodeReceive(ImageNode):
 
 
 def game():
-    controller = wargame.engine.init(os.getcwd())
+    resources = os.path.join(os.getcwd(), '../')
+    controller = wargame.engine.init(resources)
 
     # this time, we want 1 node to control 2 other nodes
 

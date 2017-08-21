@@ -42,7 +42,9 @@ class MouseOverNode(ImageNode):
 
 
 def game():
-    controller = wargame.engine.init(os.getcwd())
+    resources = os.path.join(os.getcwd(), '../')
+    controller = wargame.engine.init(resources)
+
     # we need 2 images to display mouse over and mouse not over
     red = Resources.colour_surface(200, 200, (255, 0, 0))
     blue = Resources.colour_surface(200, 200, (0, 0, 255))
