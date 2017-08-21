@@ -4,7 +4,7 @@ import pygame
 
 from wargame.nodes import ImageNode
 from wargame.loader import Resources
-from wargame.gui.gui_nodes import GuiLabel
+from wargame.gui.nodes import GuiLabel
 
 
 class BorderWidget(ImageNode):
