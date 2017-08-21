@@ -90,6 +90,9 @@ class GuiImage(GuiNode):
         rect = pygame.Rect(0, 0, image.get_width(), image.get_height())
         super().__init__(rect, image, align, False)
 
+    def build_image(self):
+        pass
+
     @staticmethod
     def from_image_node(node):
         return GuiImage(node.image)
