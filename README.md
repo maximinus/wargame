@@ -31,16 +31,15 @@ Some example code:
 
     import wargame.engine
     from wargame.scene import scene
-    from wargame.gui.gui_nodes import VerticalContainer
-    from wargame.gui.window import window
-    from wargame.nodes import ImageNode
+    from wargame.gui.nodes import GuiImage, VerticalContainer
+    from wargame.gui.containers import window
 
     def game()
         # init the basic engine
         controller = wargame.engine(init(os.cwd()))
 
-        # let's get the node we want to display - it's a simple ImageNode
-        image = ImageNode.from_image(0, 0, 'sprites.dog')
+        # let's get the node we want to display - it's a simple image
+        image = GuiImage.from_image('sprites.dog')
 
         # put that into a Window
         window = Window(image)
