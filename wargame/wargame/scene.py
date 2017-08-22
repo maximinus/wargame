@@ -6,6 +6,9 @@ import pygame
 from wargame.loader import Resources
 from wargame.events import MessageType
 
+import logging
+logger = logging.getLogger(__name__)
+
 # a scene blocks all other gfx, music and input.
 # scenes do not know about images, since the nodes do that
 
@@ -69,8 +72,6 @@ class Scene:
         if message.message_id == MessageType.UPDATE_SCREEN:
             return self.update_screen()
         for node in self.nodes:
-            # go through each message they listen for
-            for signal in node.messages:
-                if signal == message.message_id:
-                    if node.handle(message):
-                        return
+            # let the node decide what it has to
+            if node.handle(message):
+                return

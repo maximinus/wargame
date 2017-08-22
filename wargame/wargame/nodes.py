@@ -9,6 +9,9 @@ import pygame
 from wargame.loader import Resources
 from wargame.events import MessageType
 
+import logging
+logger = logging.getLogger(__name__)
+
 
 class BaseNode:
     def __init__(self, rect):
@@ -23,13 +26,14 @@ class BaseNode:
         """
         Basenodes have no image and thus no size
         """
-        return (0, 0)
+        return [0, 0]
 
     def update(self, time_delta):
         pass
 
     def handle(self, message):
-        print('{0} got {1}'.format(self, message))
+        # return False - we did not consume the event
+        return False
 
 
 class ImageNode(BaseNode):
@@ -41,10 +45,6 @@ class ImageNode(BaseNode):
         self.tween_result = None
         self.visible = True
         self.displayable = True
-
-    @property
-    def minimum_size(self):
-        return (self.image.get_width(), self.image.get_height())
 
     def update(self, time_delta):
         self.tween_result = None

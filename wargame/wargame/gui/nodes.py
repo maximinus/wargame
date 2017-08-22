@@ -5,6 +5,7 @@ import pygame
 from wargame.nodes import ImageNode
 from wargame.gui.layout import Align
 from wargame.loader import Resources
+from wargame.gui.helpers import add_border
 
 import logging
 logger = logging.getLogger(__name__)
@@ -43,6 +44,10 @@ class GuiNode(ImageNode):
             self.rect = pygame.Rect(0, 0, size, size)
             self.visible = True
 
+    def handle(self, message):
+        # returns False - we didn't consume the event
+        return False
+
     @property
     def minimum_size(self):
         # return the space that this widget would like to consume
@@ -80,6 +85,40 @@ class GuiLabel(GuiNode):
 
     def build_image(self, width=0, height=0):
         pass
+
+
+class Button(GuiNode):
+    """
+    A gui widget with the border of a Button
+    """
+    border_config = 'ButtonBorder'
+
+    def __init__(self, text, align=Align.NONE):
+        # make a label of the text - but we only want the image
+        label = GuiLabel(text, (0, 0, 0), (214, 214, 214)).image
+        # get the contents to render themselves
+        border = Resources.configs.get(self.border_config)
+        image = add_border(label, border, Resources.get_image(border.image))
+        rect = pygame.Rect(0, 0, image.get_width(), image.get_height())
+        super().__init__(rect, image, align, False)
+        self.messages = [pygame.MOUSEMOTION, pygame.MOUSEBUTTONUP, pygame.MOUSEBUTTONDOWN]
+
+    def handle(self, message):
+        # we need to handle a mouse move or a mousedown
+        # is that what we have?
+        if message.message_id not in self.messages:
+            return False
+        # is the mouse in the rect?
+        xpos = message.data.pos[0]
+        ypos = message.data.pos[1]
+
+        print(xpos, ypos)
+
+        if self.rect.collidepoint(xpos, ypos):
+            # mouse says inside
+            print('Inside')
+        else:
+            print('Outside')
 
 
 class GuiImage(GuiNode):

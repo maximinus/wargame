@@ -5,8 +5,8 @@ import os
 import wargame.engine
 from wargame.scene import Scene
 from wargame.nodes import ImageNode
-from wargame.gui.nodes import HorizontalContainer, VerticalContainer, GuiImage
-from wargame.gui.containers import Window, Button
+from wargame.gui.nodes import HorizontalContainer, VerticalContainer, GuiImage, Button
+from wargame.gui.containers import Window
 
 
 def game():
