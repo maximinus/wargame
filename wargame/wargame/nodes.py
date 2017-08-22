@@ -79,11 +79,6 @@ class ImageNode(BaseNode):
         if rects.new is not None:
             self.draw_single_dirty(rects.new, screen)
 
-    def build_image(self, width=0, height=0):
-        # called if the image needs to be drawn
-        # override this for child nodes with complex requirements
-        pass
-
     @staticmethod
     def from_image(xpos, ypos, image):
         image = Resources.get_image(image)
@@ -91,9 +86,9 @@ class ImageNode(BaseNode):
         return ImageNode(rect, image)
 
     @staticmethod
-    def from_surface(xpos, ypos, image):
-        rect = pygame.Rect(xpos, ypos, image.get_width(), image.get_height())
-        return ImageNode(rect, image)
+    def from_surface(xpos, ypos, surface):
+        rect = pygame.Rect(xpos, ypos, surface.get_width(), surface.get_height())
+        return ImageNode(rect, surface)
 
     @staticmethod
     def from_colour(width, height, colour):

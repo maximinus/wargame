@@ -20,7 +20,7 @@ Other features include:
 * A terminal to interact with any program whilst the code is running.
 * Lots of example code.
 
-Wargame-Engine is based on the principles of being *opinionated* and *flexible*. There are a number of standard defaults that are usually "sensible" but all of these can be over-ridden.
+Wargame-Engine is based on the principles of being *opinionated* and *flexible*. What that means in principle is that the engine will always have defaults set that are designed to be the ones you want, but you are also free to shoot yourself in the foot with whatever configuration you desire.
 
 Wargame-Engine, unlike Pygame, is not a library. The main event loop is part of the engine and not implemented by the programmer. Similary, elements such as image loading are built into the engine, in a bid to reduce programmer work.
 
@@ -36,7 +36,7 @@ Some example code:
 
     def game()
         # init the basic engine
-        controller = wargame.engine(init(os.cwd()))
+        controller = wargame.engine.init(os.cwd()))
 
         # let's get the node we want to display - it's a simple image
         image = GuiImage.from_image('sprites.dog')
@@ -44,7 +44,7 @@ Some example code:
         # put that into a Window
         window = Window(image)
 
-        # all nodes are part of a scene
+        # place that into a scene
         scene = Scene([window])
 
         # tell the engine we have a scene, and start it
