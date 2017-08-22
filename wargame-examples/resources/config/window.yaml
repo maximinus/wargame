@@ -23,8 +23,8 @@ data:
     # colour of background
     background: [214, 214, 214]
     dimensions:
-        extra-width: 6
-        extra-height: 27
-        min-width: 24
-        min-height: 29
+        extra_width: 6
+        extra_height: 27
+        min_width: 24
+        min_height: 29
     border_size: 8

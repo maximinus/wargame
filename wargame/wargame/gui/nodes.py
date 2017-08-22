@@ -35,6 +35,10 @@ class GuiNode(ImageNode):
     def draw_single_dirty(self, rect, screen):
         pass
 
+    def update_position(self, deltax, deltay):
+        self.rect.x += deltax
+        self.rect.y += deltay
+
     def build_image(self, width=0, height=0):
         # this function MUST be overridden.
         # to ensure no errors, we set a horrible red square
@@ -51,8 +55,7 @@ class GuiNode(ImageNode):
     @property
     def minimum_size(self):
         # return the space that this widget would like to consume
-        # returns a 3-value tuple: [width, height, bool(fill)]
-        return [self.image.get_width(), self.image.get_height(), self.fill]
+        return [self.image.get_width(), self.image.get_height()]
 
     @staticmethod
     def from_image(image, **kwargs):
@@ -112,7 +115,12 @@ class Button(GuiNode):
         xpos = message.data.pos[0]
         ypos = message.data.pos[1]
 
-        print(xpos, ypos)
+        # 221, 304
+        print(self.rect)
+        # <rect(62, 284, 69, 31)>
+        # <rect(139, 284, 52, 31)>
+        # <rect(199, 284, 60, 31)>
+        return
 
         if self.rect.collidepoint(xpos, ypos):
             # mouse says inside
@@ -166,6 +174,13 @@ class GuiContainer(GuiNode):
                 return True
         # message may be passed on to other nodes
         return False
+
+    def update_position(self, deltax, deltay):
+        # need to update ourselves and all children
+        self.rect.x += deltax
+        self.rect.y += deltay
+        for i in self.nodes:
+            i.update_position(deltax, deltay)
 
     @property
     def minimum_size(self):
@@ -235,8 +250,7 @@ class VerticalContainer(GuiContainer):
             if i.image is None:
                 i.build_image()
             # now we have the xpos and ypos
-            i.rect.x = widget_xpos
-            i.rect.y = ypos
+            i.update_position(widget_xpos, ypos)
             image.blit(i.image, (widget_xpos, ypos))
             ypos += i.image.get_height() + (self.border * 2)
         return image
@@ -256,6 +270,7 @@ class VerticalContainer(GuiContainer):
             if self.align_children == Align.TOP:
                 # everything at the top
                 node_image = self.build_simple_image()
+                # (0,0) -> no need to update positions
                 image.blit(node_image, (0, 0))
                 return image
         else:
@@ -303,8 +318,7 @@ class HorizontalContainer(GuiContainer):
                 # because this is a Horiontal container, the width
                 # is always the gui width, but the HEIGHT is the max height
                 i.build_image(width=-1, height=height)
-            i.rect.x = xpos
-            i.rect.y = widget_ypos
+            i.update_position(xpos, widget_ypos)
             image.blit(i.image, (xpos, widget_ypos))
             xpos += i.image.get_width() + (self.border * 2)
         return image
@@ -324,6 +338,7 @@ class HorizontalContainer(GuiContainer):
             if self.align_children == Align.LEFT:
                 # everything to the left
                 node_image = self.build_simple_image()
+                # (0,0) -> no need to update positions
                 image.blit(node_image, (0, 0))
                 return image
         else:
