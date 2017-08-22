@@ -143,6 +143,11 @@ class GuiImage(GuiNode):
 
 
 class GuiContainer(GuiNode):
+    """
+    A container must set it's childrens x/y
+    position relative to itself
+    We will know the co-ords when we blit
+    """
     def __init__(self, nodes, background, border=4, align_children=Align.CENTRE):
         rect = pygame.Rect(0, 0, 0, 0)
         super().__init__(rect, None, align=Align.NONE, fill=True)
@@ -229,6 +234,9 @@ class VerticalContainer(GuiContainer):
                 # if left, we don't need to do anything
             if i.image is None:
                 i.build_image()
+            # now we have the xpos and ypos
+            i.rect.x = widget_xpos
+            i.rect.y = ypos
             image.blit(i.image, (widget_xpos, ypos))
             ypos += i.image.get_height() + (self.border * 2)
         return image
@@ -295,6 +303,29 @@ class HorizontalContainer(GuiContainer):
                 # because this is a Horiontal container, the width
                 # is always the gui width, but the HEIGHT is the max height
                 i.build_image(width=-1, height=height)
+            i.rect.x = xpos
+            i.rect.y = widget_ypos
             image.blit(i.image, (xpos, widget_ypos))
             xpos += i.image.get_width() + (self.border * 2)
         return image
+
+    def build_full_image(self, width, height):
+        if height == -1:
+            # use rect size
+            width = self.minimum_size[1]
+        image = Resources.colour_surface(width, height, self.background)
+        # we fill the given space with the widgets.
+        # what is our minimum size?
+        sizes = [x.minimum_size for x in self.nodes]
+        min_width = sum([x[0] for x in sizes])
+        if min_width < width:
+            # we have spare space, since we only worry about the vertical size
+            # how do we distribute the space?
+            if self.align_children == Align.LEFT:
+                # everything to the left
+                node_image = self.build_simple_image()
+                image.blit(node_image, (0, 0))
+                return image
+        else:
+            # must be same size
+            return self.build_simple_image()

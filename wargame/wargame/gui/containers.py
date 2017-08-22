@@ -8,6 +8,10 @@ from wargame.gui.helpers import add_border
 
 
 class BorderWidget(ImageNode):
+    """
+    A border widget is a widget that contains something (like a window)
+    It must handle setting the x/y coords relative to itself
+    """
     border_config = 'WindowBorder'
 
     def __init__(self, contents, xpos=-1, ypos=-1):
