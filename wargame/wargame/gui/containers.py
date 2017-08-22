@@ -24,6 +24,8 @@ class BorderWidget(ImageNode):
             xpos, ypos = Resources.get_centre(image.get_width(), image.get_height())
         rect = pygame.Rect(xpos, ypos, image.get_width(), image.get_height())
         super().__init__(rect, image)
+        # widget positions should be set to screen positions
+        self.container.update_position(self.rect.x, self.rect.y)
 
     def update(self, time_delta):
         pass
@@ -37,15 +39,14 @@ class BorderWidget(ImageNode):
     def handle(self, message):
         # pass the message to the container object, unless we
         # want to do something with this message first
+        # we will need to adjust any coords against the window though
         self.container.handle(message)
 
     def build_widget_display(self, border, base_image):
         self.container.build_image()
         image = add_border(base_image, border, Resources.get_image(border.image))
         # only relative to the window
-        # have to add widths and border
-        print(border.dimensions['extra_height'])
-        print(border.dimensions.extra_width)
+        # have to add widths and border AND screen position
         border_size = border.border_size
         deltax = border.dimensions.extra_width + border_size
         deltay = border.dimensions.extra_height + border_size

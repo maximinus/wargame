@@ -19,12 +19,13 @@ def game():
     # start by getting 3 buttons
     button1 = Button('Wargame')
     button2 = Button('Engine')
-    button3 = Button('By Chris')
-    container1 = HorizontalContainer([button1, button2, button3], background=(214, 214, 214))
+    #button3 = Button('By Chris')
+    #container1 = HorizontalContainer([button1, button2, button3], background=(214, 214, 214))
     # and a logo
-    logo = GuiImage.from_image('sprites.logo')
-    container2 = VerticalContainer([logo, container1], background=(214, 214, 214))
-    window = Window(container2)
+    #logo = GuiImage.from_image('sprites.logo')
+    #container2 = VerticalContainer([logo, container1], background=(214, 214, 214))
+    bc = VerticalContainer([button1], background=(214, 214, 214))
+    window = Window(bc, xpos=50, ypos=50)
 
     # add the window to a scene
     scene = Scene([background, window])
