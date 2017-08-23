@@ -28,13 +28,25 @@ class BorderWidget(ImageNode):
         self.container.update_position(self.rect.x, self.rect.y)
 
     def update(self, time_delta):
-        pass
+        # we need to collect all of the dirty rects in all the nodes
+        tween_results = self.get_dirty_rects(self.container)
+        # need to store these
 
-    def draw_single_dirty(self, rect, screen):
-        pass
-
-    def draw_dirty(self, rect, scene):
-        pass
+    def get_dirty_rects(self, parent):
+        root = []
+        try:
+            nodes = parent.nodes
+            # right, we have a tree, so we need to call
+            # this function again for all those nodes
+            for node in nodes:
+                root.extend(self.flatten_nodes(node))
+            return root
+        except AttributeError:
+            # single node, so just return it's dirty rects
+            if parent.tween_result is not None:
+                return [parent.tween_result]
+            else:
+                return []
 
     def handle(self, message):
         # pass the message to the container object, unless we
