@@ -118,6 +118,14 @@ class ResourceHandler:
         surface.fill(colour)
         return surface
 
+    def alpha_surface(self, width, height, alpha):
+        """
+        Return an alpha surface of this size
+        """
+        surface = pygame.Surface((width, height), pygame.SRCALPHA, 32).convert_alpha()
+        surface.set_alpha(alpha)
+        return surface
+
     def get_centre(self, width, height):
         # given width and height of a rect, return thr (xpos, ypos)
         # that would display this in the centre

@@ -6,6 +6,7 @@ from wargame.nodes import ImageNode
 from wargame.gui.layout import Align
 from wargame.loader import Resources
 from wargame.gui.helpers import add_border
+from wargame.tweens import TweenResult
 
 import logging
 logger = logging.getLogger(__name__)
@@ -105,6 +106,9 @@ class Button(GuiNode):
         rect = pygame.Rect(0, 0, image.get_width(), image.get_height())
         super().__init__(rect, image, align, False)
         self.messages = [pygame.MOUSEMOTION, pygame.MOUSEBUTTONUP, pygame.MOUSEBUTTONDOWN]
+        self.highlight = self.get_highlight()
+        self.normal_image = self.image
+        self.inside = False
 
     def handle(self, message):
         # we need to handle a mouse move or a mousedown
@@ -117,9 +121,24 @@ class Button(GuiNode):
 
         if self.rect.collidepoint(xpos, ypos):
             # mouse says inside
-            print('Inside')
+            if self.image is self.normal_image:
+                print('Inside')
+                self.image = self.highlight
+                self.tween_result = TweenResult(new=self.rect)
+                self.inside = True
         else:
-            print('Outside')
+            if self.image is self.highlight:
+                print('Outside')
+                self.image = self.normal_image
+                self.tween_result = TweenResult(new=self.rect)
+                self.inside = False
+
+    def get_highlight(self):
+        highlight = self.image.copy()
+        alpha = Resources.alpha_surface(self.image.get_width(), self.image.get_height(), 64)
+        alpha.fill((255, 255, 255))
+        highlight.blit(alpha, (0, 0))
+        return highlight
 
 
 class GuiImage(GuiNode):
