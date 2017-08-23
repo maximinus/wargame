@@ -41,11 +41,11 @@ class Scene:
         for node in self.nodes:
             node.update(time_delta)
 
-    def draw_dirty_background(self, rects):
-        if rects.old is not None:
-            self.screen.blit(self.background, rects.old, rects.old)
-        if rects.new is not None:
-            self.screen.blit(self.background, rects.new, rects.new)
+    def draw_dirty_background(self, tween):
+        if tween.old is not None:
+            self.screen.blit(self.background, tween.old, tween.old)
+        if tween.new is not None:
+            self.screen.blit(self.background, tween.new, tween.new)
 
     def update_screen(self):
         self.process_tweens()

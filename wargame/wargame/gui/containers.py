@@ -29,8 +29,9 @@ class BorderWidget(ImageNode):
 
     def update(self, time_delta):
         # we need to collect all of the dirty rects in all the nodes
-        tween_results = self.get_dirty_rects(self.container)
-        # need to store these
+        self.tween_result = self.get_dirty_rects(self.container)
+        if self.tween_result == []:
+            self.tween_result = None
 
     def get_dirty_rects(self, parent):
         root = []
