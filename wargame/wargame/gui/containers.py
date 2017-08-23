@@ -43,13 +43,13 @@ class BorderWidget(ImageNode):
         self.container.handle(message)
 
     def build_widget_display(self, border, base_image):
-        self.container.build_image()
+        # base image has already been built at this point
         image = add_border(base_image, border, Resources.get_image(border.image))
         # only relative to the window
         # have to add widths and border AND screen position
         border_size = border.border_size
-        deltax = border.dimensions.extra_width + border_size
-        deltay = border.dimensions.extra_height + border_size
+        deltax = border.rects.middle_left[2] + border_size
+        deltay = border.rects.top_left[3] + border_size
         self.container.update_position(deltax, deltay)
         return image
 

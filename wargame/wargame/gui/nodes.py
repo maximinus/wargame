@@ -36,7 +36,6 @@ class GuiNode(ImageNode):
         pass
 
     def update_position(self, deltax, deltay):
-        print(self, deltax, deltay)
         self.rect.x += deltax
         self.rect.y += deltay
 
@@ -115,10 +114,6 @@ class Button(GuiNode):
         # is the mouse in the rect?
         xpos = message.data.pos[0]
         ypos = message.data.pos[1]
-
-        # <rect(253, 446, 69, 31)>
-        # <rect(330, 446, 52, 31)>
-        # <rect(390, 446, 60, 31)>
 
         if self.rect.collidepoint(xpos, ypos):
             # mouse says inside

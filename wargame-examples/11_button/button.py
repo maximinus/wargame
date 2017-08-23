@@ -24,8 +24,8 @@ def game():
     # and a logo
     #logo = GuiImage.from_image('sprites.logo')
     #container2 = VerticalContainer([logo, container1], background=(214, 214, 214))
-    bc = VerticalContainer([button1], background=(214, 214, 214))
-    window = Window(bc, xpos=50, ypos=50)
+    bc = VerticalContainer([button1], background=(0, 214, 214))
+    window = Window(bc, xpos=0, ypos=0)
 
     # add the window to a scene
     scene = Scene([background, window])
