@@ -47,13 +47,15 @@ class ImageNode(BaseNode):
         self.displayable = True
 
     def update(self, time_delta):
+        # needs to return the dirty rects
         self.tween_result = None
         if self.tween is None:
-            return
+            return []
         self.tween_result = self.tween.update(self, time_delta)
         if self.tween_result.finished:
             # remove the tween
             self.tween = None
+        return self.tween_result.dirty_rects
 
     def draw_single_dirty(self, rect, screen):
         # so first we say are we over that rect?

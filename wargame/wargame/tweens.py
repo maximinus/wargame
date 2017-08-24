@@ -33,6 +33,17 @@ class TweenResult:
         # if we didn't use up all our time
         return self.time_left != 0
 
+    @property
+    def dirty_rects(self):
+        # return an array of dirty rects
+        rects = []
+        # put the old FIRST, as the new may overwrite
+        if self.old is not None:
+            rects.append(self.old)
+        if self.new is not None:
+            rects.append(self.new)
+        return rects
+
     def __repr__(self):
         return '<{0}->{1}>:{2}'.format(self.old, self.new, self.time_left)
 

@@ -31,7 +31,9 @@ class GuiNode(ImageNode):
         super().__init__(rect, image)
 
     def update(self, time_delta):
-        pass
+        # this function requires you return a list
+        # of dirty rects. In this case we have none
+        return []
 
     def draw_single_dirty(self, rect, screen):
         pass
@@ -52,6 +54,10 @@ class GuiNode(ImageNode):
     def handle(self, message):
         # returns False - we didn't consume the event
         return False
+
+    @property
+    def dirty_rects(self):
+        return []
 
     @property
     def minimum_size(self):
@@ -108,7 +114,7 @@ class Button(GuiNode):
         self.messages = [pygame.MOUSEMOTION, pygame.MOUSEBUTTONUP, pygame.MOUSEBUTTONDOWN]
         self.highlight = self.get_highlight()
         self.normal_image = self.image
-        self.inside = False
+        self.changed = False
 
     def handle(self, message):
         # we need to handle a mouse move or a mousedown
@@ -124,14 +130,12 @@ class Button(GuiNode):
             if self.image is self.normal_image:
                 print('Inside')
                 self.image = self.highlight
-                self.tween_result = TweenResult(new=self.rect)
-                self.inside = True
+                self.changed = True
         else:
             if self.image is self.highlight:
                 print('Outside')
                 self.image = self.normal_image
-                self.tween_result = TweenResult(new=self.rect)
-                self.inside = False
+                self.changed = True
 
     def get_highlight(self):
         highlight = self.image.copy()
@@ -139,6 +143,14 @@ class Button(GuiNode):
         alpha.fill((255, 255, 255))
         highlight.blit(alpha, (0, 0))
         return highlight
+
+    def update(self, time_delta):
+        # need to pass back a list of dirty rects
+        if self.changed:
+            # make sure we don't update next time
+            self.changed = False
+            return [self.rect]
+        return []
 
 
 class GuiImage(GuiNode):

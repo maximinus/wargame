@@ -25,21 +25,16 @@ class Scene:
     def add_node(self, node):
         self.nodes.append(node)
 
-    def get_tween_result(self):
-        rects = []
-        for node in self.nodes:
-            if node.image is not None:
-                rects.extend(node.tween_result)
-        return rects
-
     def process_tweens(self):
         time_now = time.perf_counter()
         time_delta = time_now - self.last_tick
         self.last_tick = time_now
         # calculate millisecoonds since last update
         time_delta = int(time_delta * 1000)
+        dirty_rects = []
         for node in self.nodes:
-            node.update(time_delta)
+            dirty_rects.extend(node.update(time_delta))
+        return dirty_rects
 
     def draw_dirty_background(self, tween):
         if tween.old is not None:
@@ -55,6 +50,7 @@ class Scene:
         for node in display_nodes:
             self.draw_dirty_background(node.tween_result)
         # check if they have some dirty rects
+        # this is wrong: we need to update ALL nodes with ALL tweens
         for node in display_nodes:
             node.draw_dirty(node, node.tween_result, self.screen)
         pygame.display.flip()
