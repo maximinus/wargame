@@ -38,11 +38,10 @@ class BorderWidget(ImageNode):
             # right, we have a tree, so we need to call
             # this function again for all those nodes
             for node in nodes:
-                root.extend(self.flatten_nodes(node))
+                root.extend(self.get_dirty_rects(node, time_delta))
             return root
         except AttributeError:
             # single node, so just return it's dirty rects
-            print(parent)
             return parent.update(time_delta)
 
     def handle(self, message):

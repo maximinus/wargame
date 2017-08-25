@@ -57,7 +57,9 @@ class ImageNode(BaseNode):
             self.tween = None
         return self.tween_result.dirty_rects
 
-    def draw_single_dirty(self, rect, screen):
+    def draw_dirty(self, rect, screen):
+        if not self.visible:
+            return
         # so first we say are we over that rect?
         # given a rect and a screen, update the screen
         rect = rect.clip(self.rect)
@@ -69,17 +71,6 @@ class ImageNode(BaseNode):
                                  rect.width,
                                  rect.height)
             screen.blit(self.image, rect, offset)
-
-    def draw_dirty(self, node, rects, screen):
-        # do we need drawing?
-        if not self.visible:
-            return
-        if rects.old is not None:
-            # don't draw ourselves to old position
-            if node is not self:
-                self.draw_single_dirty(rects.old, screen)
-        if rects.new is not None:
-            self.draw_single_dirty(rects.new, screen)
 
     @staticmethod
     def from_image(xpos, ypos, image):

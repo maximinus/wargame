@@ -149,6 +149,7 @@ class Button(GuiNode):
         if self.changed:
             # make sure we don't update next time
             self.changed = False
+            print('Updated')
             return [self.rect]
         return []
 

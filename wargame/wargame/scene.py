@@ -36,23 +36,21 @@ class Scene:
             dirty_rects.extend(node.update(time_delta))
         return dirty_rects
 
-    def draw_dirty_background(self, tween):
-        if tween.old is not None:
-            self.screen.blit(self.background, tween.old, tween.old)
-        if tween.new is not None:
-            self.screen.blit(self.background, tween.new, tween.new)
+    def draw_dirty_background(self, rect):
+        self.screen.blit(self.background, rect, rect)
 
     def update_screen(self):
-        self.process_tweens()
-        # go through displayable nodes
+        dirty_rects = self.process_tweens()
+        # only refresh displayable nodes
         nodes = [x for x in self.nodes if x.displayable]
-        display_nodes = [x for x in nodes if x.tween_result is not None]
-        for node in display_nodes:
-            self.draw_dirty_background(node.tween_result)
-        # check if they have some dirty rects
-        # this is wrong: we need to update ALL nodes with ALL tweens
-        for node in display_nodes:
-            node.draw_dirty(node, node.tween_result, self.screen)
+        # draw the dirty background
+        for rect in dirty_rects:
+            self.draw_dirty_background(rect)
+        # loop through all dirty rects
+        for rect in dirty_rects:
+            # then loop through all display nodes
+            for node in nodes:
+                node.draw_dirty(rect, self.screen)
         pygame.display.flip()
 
     def draw(self):
