@@ -66,8 +66,8 @@ class ImageNode(BaseNode):
         if rect.size != 0:
             # we have a collision
             # work out what to copy from OUR image
-            offset = pygame.Rect(self.rect.x - rect.x,
-                                 self.rect.y - rect.y,
+            offset = pygame.Rect(rect.x - self.rect.x,
+                                 rect.y - self.rect.y,
                                  rect.width,
                                  rect.height)
             screen.blit(self.image, rect, offset)

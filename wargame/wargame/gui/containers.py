@@ -31,7 +31,6 @@ class BorderWidget(ImageNode):
         # all of these rects are local to our node, and they
         # need to be reltive to the screen
         for rect in rects:
-            print('R', rect)
             rect.x += self.rect.x
             rect.y += self.rect.y
         return rects

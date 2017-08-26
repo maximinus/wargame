@@ -128,19 +128,17 @@ class Button(GuiNode):
         if self.rect.collidepoint(xpos, ypos):
             # mouse says inside
             if self.image is self.normal_image:
-                print('Inside')
                 self.image = self.highlight
                 self.changed = True
         else:
             if self.image is self.highlight:
-                print('Outside')
                 self.image = self.normal_image
                 self.changed = True
 
     def get_highlight(self):
         highlight = self.image.copy()
         alpha = Resources.alpha_surface(self.image.get_width(), self.image.get_height(), 64)
-        alpha.fill((255, 255, 255))
+        alpha.fill((255, 255, 255, 64))
         highlight.blit(alpha, (0, 0))
         return highlight
 
@@ -149,7 +147,6 @@ class Button(GuiNode):
         if self.changed:
             # make sure we don't update next time
             self.changed = False
-            print('Updated')
             # this is a rect that is relative to this node
             return [self.rect]
         return []
