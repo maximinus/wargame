@@ -16,7 +16,6 @@ logger = logging.getLogger(__name__)
 # containers do it one way only - but will listen to gui objects
 # thus, containers have an align
 # it is overridden by the gui object align
-# all gui objects are ImageNodes to the engine
 
 
 class GuiNode(ImageNode):
@@ -28,6 +27,7 @@ class GuiNode(ImageNode):
         # fill tells parent that it will consume all the space it can
         self.align = align
         self.fill = fill
+        self.offset = pygame.Rect(0, 0, 0, 0)
         super().__init__(rect, image)
 
     def update(self, time_delta):
@@ -39,8 +39,8 @@ class GuiNode(ImageNode):
         pass
 
     def update_position(self, deltax, deltay):
-        self.rect.x += deltax
-        self.rect.y += deltay
+        self.offset.x += deltax
+        self.offset.y += deltay
 
     def build_image(self, width=0, height=0):
         # this function MUST be overridden.
@@ -51,7 +51,7 @@ class GuiNode(ImageNode):
             self.rect = pygame.Rect(0, 0, size, size)
             self.visible = True
 
-    def handle(self, message):
+    def handle(self, message, rect):
         # returns False - we didn't consume the event
         return False
 
@@ -116,14 +116,14 @@ class Button(GuiNode):
         self.normal_image = self.image
         self.changed = False
 
-    def handle(self, message):
+    def handle(self, message, rect):
         # we need to handle a mouse move or a mousedown
         # is that what we have?
         if message.message_id not in self.messages:
             return False
         # is the mouse in the rect?
-        xpos = message.data.pos[0]
-        ypos = message.data.pos[1]
+        xpos = message.data.pos[0] - (rect.x + self.offset.x)
+        ypos = message.data.pos[1] - (rect.y + self.offset.y)
 
         if self.rect.collidepoint(xpos, ypos):
             # mouse says inside
@@ -150,6 +150,7 @@ class Button(GuiNode):
             # make sure we don't update next time
             self.changed = False
             print('Updated')
+            # this is a rect that is relative to this node
             return [self.rect]
         return []
 
@@ -191,10 +192,10 @@ class GuiContainer(GuiNode):
         self.background = background
         self.align_children = align_children
 
-    def handle(self, message):
+    def handle(self, message, rect):
         # iterate through nodes in the container
         for i in self.nodes:
-            if i.handle(message):
+            if i.handle(message, rect):
                 # handled and blocked by something
                 return True
         # message may be passed on to other nodes
