@@ -4,12 +4,14 @@ import logging
 from box import Box
 logger = logging.getLogger(__name__)
 
+from wargame.configs.window import WindowLoader
+
 
 class BaseConfig:
     members = []
     name = 'BaseConfig'
 
-    def __init__(self, data, path):
+    def __init__(self, data):
         # TODO: add member checking
         data['type'] = self.name
         self.data = Box(data)
@@ -30,9 +32,15 @@ class FontConfig(BaseConfig):
     name = 'Fonts'
 
 
+class WindowConfig(BaseConfig):
+    members = ['position', 'nodes']
+    name = 'Window'
+
+
 CONFIGS = {'WindowBorder': WindowBorderConfig,
            'ButtonBorder': ButtonConfig,
-           'Fonts': FontConfig}
+           'Fonts': FontConfig,
+           'WindowConfig': WindowConfig}
 
 
 def get_config_item(data, path):
@@ -50,7 +58,7 @@ def get_config_item(data, path):
         return
 
     try:
-        config = CONFIGS[data['meta']['type']](data['data'], path)
+        config = CONFIGS[data['meta']['type']](data['data'])
         return config
     except ValueError:
         return

@@ -6,7 +6,7 @@ import yaml
 from pathlib import PurePath
 from logzero import logger
 
-from wargame.configs.gfx import get_config_item
+from wargame.configs.loader import get_config_item
 
 
 class ConfigLoader:

@@ -1,0 +1,15 @@
+# example of how to construct a window from a config file
+
+# we need to indicate what it is we are creating
+meta:
+    type: WindowConfig
+    name: Example
+
+# a window just needs some nodes and a position
+data:
+    # -1 means 'centre of the screen please'
+    position: [-1, -1]
+    nodes:
+        VerticalContainer:
+            Button:
+                text: 'Wargame'
