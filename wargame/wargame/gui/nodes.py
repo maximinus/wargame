@@ -7,6 +7,7 @@ from wargame.gui.layout import Align
 from wargame.loader import Resources
 from wargame.gui.helpers import add_border
 from wargame.tweens import TweenResult
+from wargame.scheduler import MessageSystem
 
 import logging
 logger = logging.getLogger(__name__)
@@ -103,7 +104,7 @@ class Button(GuiNode):
     """
     border_config = 'ButtonBorder'
 
-    def __init__(self, text, align=Align.NONE):
+    def __init__(self, text, signal, align=Align.NONE):
         # make a label of the text - but we only want the image
         label = GuiLabel(text, (0, 0, 0), (214, 214, 214)).image
         # get the contents to render themselves
@@ -114,6 +115,7 @@ class Button(GuiNode):
         self.messages = [pygame.MOUSEMOTION, pygame.MOUSEBUTTONUP, pygame.MOUSEBUTTONDOWN]
         self.highlight = self.get_highlight()
         self.normal_image = self.image
+        self.signal = signal
         self.changed = False
 
     def handle(self, message, rect):
@@ -127,6 +129,10 @@ class Button(GuiNode):
 
         if self.rect.collidepoint(xpos, ypos):
             # mouse says inside
+            # have we been clicked?
+            if message.message_id == pygame.MOUSEBUTTONDOWN:
+                MessageSystem.add_priority_message(self.signal)
+
             if self.image is self.normal_image:
                 self.image = self.highlight
                 self.changed = True

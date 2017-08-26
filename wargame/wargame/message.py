@@ -4,7 +4,7 @@
 
 
 class Message:
-    def __init__(self, message_id, data):
+    def __init__(self, message_id, data=None):
         self.message_id = message_id
         self.data = data
 

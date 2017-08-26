@@ -7,6 +7,8 @@ from wargame.scene import Scene
 from wargame.nodes import ImageNode
 from wargame.gui.nodes import VerticalContainer, Button
 from wargame.gui.containers import Window
+from wargame.message import Message
+from wargame.events import MessageType
 
 
 def game():
@@ -16,8 +18,8 @@ def game():
     # let's have a background
     background = ImageNode.from_image(0, 0, 'sprites.wallpaper')
 
-    # start by getting 3 buttons
-    button = Button('Wargame')
+    # a button needs 2 things - the text to display, and the message to send
+    button = Button('Close', Message(MessageType.EXIT_GAME))
     bc = VerticalContainer([button], background=(214, 214, 214))
     window = Window(bc, xpos=-1, ypos=-1)
 
