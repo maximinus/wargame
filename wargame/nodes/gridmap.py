@@ -10,7 +10,7 @@ from wargame.nodes.tiles import Axial, PointyHexagon, FlatHexagon
 # for now, it just holds some hexagons
 
 
-def make_rectangle(width, height, radius, pointy):
+def make_rectangle(width, height, radius, pointy=True):
     # returns a grid centered on Axial(0,0)
     top = -(height // 2)
     # +1 allows to be in centre
