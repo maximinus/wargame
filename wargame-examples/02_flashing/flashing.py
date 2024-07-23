@@ -2,10 +2,10 @@
 
 import os
 
-import wargame.engine
-from wargame.scene import Scene
-from wargame.nodes import ImageNode
-from wargame.tweens import FlashTween
+import wargame_old.engine
+from wargame_old.scene import Scene
+from wargame_old.nodes import ImageNode
+from wargame_old.tweens import FlashTween
 
 
 # example of flashing Node2d
@@ -14,7 +14,7 @@ from wargame.tweens import FlashTween
 def game():
     # start the engine. It needs to know where the resources file is
     resources = os.path.join(os.getcwd(), '../')
-    controller = wargame.engine.init(resources)
+    controller = wargame_old.engine.init(resources)
     # add a sprite. We need a position, and image
     sprite = ImageNode.from_image(100, 100, 'sprites.soldier')
 

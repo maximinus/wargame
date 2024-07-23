@@ -2,9 +2,9 @@
 
 import pygame
 
-from wargame.hex import Hex
-from wargame.loader import Resources
-from wargame.node import Node
+from wargame_old.hex import Hex
+from wargame_old.loader import Resources
+from wargame_old.node import Node
 
 
 class GameBoard(Node):

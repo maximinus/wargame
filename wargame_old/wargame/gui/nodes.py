@@ -2,12 +2,12 @@
 
 import pygame
 
-from wargame.nodes import ImageNode
-from wargame.gui.layout import Align
-from wargame.loader import Resources
-from wargame.gui.helpers import add_border
-from wargame.tweens import TweenResult
-from wargame.scheduler import MessageSystem
+from wargame_old.nodes import ImageNode
+from wargame_old.gui.layout import Align
+from wargame_old.loader import Resources
+from wargame_old.gui.helpers import add_border
+from wargame_old.tweens import TweenResult
+from wargame_old.scheduler import MessageSystem
 
 import logging
 logger = logging.getLogger(__name__)

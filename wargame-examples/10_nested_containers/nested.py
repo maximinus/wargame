@@ -2,18 +2,18 @@
 
 import os
 
-import wargame.engine
-from wargame.scene import Scene
-from wargame.nodes import ImageNode
-from wargame.gui.nodes import GuiImage, HorizontalContainer, VerticalContainer
-from wargame.gui.layout import Align
-from wargame.gui.containers import Window
-from wargame.loader import Resources
+import wargame_old.engine
+from wargame_old.scene import Scene
+from wargame_old.nodes import ImageNode
+from wargame_old.gui.nodes import GuiImage, HorizontalContainer, VerticalContainer
+from wargame_old.gui.layout import Align
+from wargame_old.gui.containers import Window
+from wargame_old.loader import Resources
 
 
 def game():
     resources = os.path.join(os.getcwd(), '../')
-    controller = wargame.engine.init(resources)
+    controller = wargame_old.engine.init(resources)
 
     # let's have a background
     background = ImageNode.from_image(0, 0, 'sprites.wallpaper')

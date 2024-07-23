@@ -2,9 +2,9 @@
 
 import pygame
 
-from wargame.nodes import ImageNode
-from wargame.loader import Resources
-from wargame.gui.helpers import add_border
+from wargame_old.nodes import ImageNode
+from wargame_old.loader import Resources
+from wargame_old.gui.helpers import add_border
 
 
 class BorderWidget(ImageNode):

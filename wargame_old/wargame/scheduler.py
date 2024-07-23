@@ -5,8 +5,8 @@
 from collections import deque
 import pygame
 
-from wargame.message import Message
-from wargame.events import MessageType
+from wargame_old.message import Message
+from wargame_old.events import MessageType
 
 
 class MessageQueue:

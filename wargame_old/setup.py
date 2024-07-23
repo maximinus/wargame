@@ -11,7 +11,7 @@ with open(path.join(here, 'README.md'), encoding='utf8') as f:
     long_description = f.read()
 
 setup(
-    name='wargame',
+    name='wargame_old',
     version='0.1.0',
     description='Game engine for computer wargames',
     long_description='Game engine based on Pygame and Python to make implementation of turn based games much simpler.',

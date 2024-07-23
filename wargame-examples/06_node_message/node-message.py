@@ -3,14 +3,14 @@
 import os
 import pygame
 
-import wargame.engine
-from wargame.scene import Scene
-from wargame.nodes import ImageNode
-from wargame.loader import Resources
-from wargame.tweens import TweenResult
-from wargame.scheduler import MessageSystem
-from wargame.message import Message
-from wargame.events import MessageType
+import wargame_old.engine
+from wargame_old.scene import Scene
+from wargame_old.nodes import ImageNode
+from wargame_old.loader import Resources
+from wargame_old.tweens import TweenResult
+from wargame_old.scheduler import MessageSystem
+from wargame_old.message import Message
+from wargame_old.events import MessageType
 
 # example of moving Node2d
 
@@ -69,7 +69,7 @@ class NodeReceive(ImageNode):
 
 def game():
     resources = os.path.join(os.getcwd(), '../')
-    controller = wargame.engine.init(resources)
+    controller = wargame_old.engine.init(resources)
 
     # this time, we want 1 node to control 2 other nodes
 

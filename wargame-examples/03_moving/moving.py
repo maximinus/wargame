@@ -3,10 +3,10 @@
 import os
 import pygame
 
-import wargame.engine
-from wargame.scene import Scene
-from wargame.nodes import ImageNode
-from wargame.tweens import MoveTween
+import wargame_old.engine
+from wargame_old.scene import Scene
+from wargame_old.nodes import ImageNode
+from wargame_old.tweens import MoveTween
 
 
 # example of moving Node2d
@@ -14,7 +14,7 @@ from wargame.tweens import MoveTween
 
 def game():
     resources = os.path.join(os.getcwd(), '../')
-    controller = wargame.engine.init(resources)
+    controller = wargame_old.engine.init(resources)
     # add a sprite from an image
     sprite = ImageNode.from_image(100, 100, 'sprites.soldier')
 

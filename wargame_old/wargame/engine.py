@@ -6,10 +6,10 @@ import pygame
 import logzero
 from logzero import logger
 
-from wargame.loader import Resources
-from wargame.scheduler import MessageSystem
-from wargame.events import MessageType
-from wargame.constants import VERSION
+from wargame_old.loader import Resources
+from wargame_old.scheduler import MessageSystem
+from wargame_old.events import MessageType
+from wargame_old.constants import VERSION
 
 
 class HexGameController:
@@ -26,7 +26,7 @@ class HexGameController:
         self.last_tick = 0
 
     def setup_logging(self, resource_directory):
-        log_file = os.path.join(resource_directory, 'resources', 'wargame.log')
+        log_file = os.path.join(resource_directory, 'resources', 'wargame_old.log')
         logzero.logfile(log_file)
 
     def add_scene(self, name, scene):

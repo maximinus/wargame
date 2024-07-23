@@ -6,8 +6,8 @@
 
 import pygame
 
-from wargame.loader import Resources
-from wargame.events import MessageType
+from wargame_old.loader import Resources
+from wargame_old.events import MessageType
 
 import logging
 logger = logging.getLogger(__name__)

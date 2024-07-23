@@ -4,7 +4,7 @@ import logging
 from box import Box
 logger = logging.getLogger(__name__)
 
-from wargame.configs.window import WindowLoader
+from wargame_old.configs.window import WindowLoader
 
 
 class BaseConfig:
