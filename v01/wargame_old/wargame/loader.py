@@ -45,7 +45,7 @@ class ResourceHandler:
         """
         self.images = {}
         self.fonts = {}
-        self.path = '.'
+        self.path = ''
         self.error_image = None
         self.configs = None
 
