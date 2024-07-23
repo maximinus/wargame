@@ -1,2 +1,2 @@
 from .node import Node
-from gridmap import GridMap
+from .gridmap import GridMap

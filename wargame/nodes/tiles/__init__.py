@@ -1,1 +1,1 @@
-from .hexagon import Hexagon, Axial
+from .hexagon import Hexagon, PointyHexagon, FlatHexagon, Axial

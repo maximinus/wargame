@@ -1,7 +1,27 @@
+import pygame
+from pygame import Vector2
+
+
 class Node:
-    def render(self, surface):
-        # draw this node to this surface
+    def __init__(self, pos):
+        self.position = pos
+        self.surface = None
+        self.centered = True
+
+    def get_surface(self):
+        self.surface = pygame.Surface(self.size, pygame.SRCALPHA)
+
+    def render(self):
+        # render node to its own surface
         pass
+
+    @property
+    def size(self):
+        return Vector2(1, 1)
+
+    @property
+    def dirty(self):
+        return self.surface is None
 
     @property
     def container(self):

@@ -19,6 +19,9 @@ class Axial:
     def distance(self, other):
         return (abs(self.q - other.q) + abs(self.q + self.r - other.q - other.r) + abs(self.r - other.r)) / 2.0
 
+    def __repr__(self):
+        return f'<Axial(q={self.q}, r={self.r}>'
+
 
 class Hexagon:
     def __init__(self, position, radius):
@@ -28,13 +31,31 @@ class Hexagon:
 
     @property
     def center(self):
-        return Vector2(0, 0)
+        x = self.radius * (math.sqrt(3) * self.position.q  +  math.sqrt(3) / 2.0 * self.position.r)
+        y = self.radius * (1.5 * self.position.r)
+        # we need to offset by the radius, so no points are negative
+        return Vector2(int(x) + self.radius, int(y) + self.radius)
 
 
 class PointyHexagon(Hexagon):
     def get_points(self):
         # return the points of the hexagon, from 0 degrees through 360
         pos = self.center
+        points = []
         for i in range(6):
             angle = math.radians((60.0 * i) - 30.0)
-            return Vector2(pos.x + (self.radius * math.cos(angle)), pos.y + (self.radius * math.sin(angle)))
+            points.append(Vector2(int(pos.x + (self.radius * math.cos(angle))),
+                                  int(pos.y + (self.radius * math.sin(angle)))))
+        return points
+
+
+class FlatHexagon(Hexagon):
+    def get_points(self):
+        # return the points of the hexagon, from 0 degrees through 360
+        pos = self.center
+        points = []
+        for i in range(6):
+            angle = math.radians(60.0 * i)
+            points.append(Vector2(int(pos.x + (self.radius * math.cos(angle))),
+                                  int(pos.y + (self.radius * math.sin(angle)))))
+        return points
