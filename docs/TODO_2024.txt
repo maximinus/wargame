@@ -1,0 +1,9 @@
+
+
+1: Write some code to draw hexes
+    This means defining a hex and being able to draw it
+2: Have the concept of a camera, so we can move a "map" of tiles
+3: Do this also for squares, and both types of hexes
+4: Have helper files that can work out what is clicked
+5: Allow tiles to be "highlighted" in various colors
+6: Allow map to be panned
