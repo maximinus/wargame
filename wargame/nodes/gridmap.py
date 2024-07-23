@@ -11,23 +11,23 @@ from wargame.nodes.tiles import Axial, PointyHexagon, FlatHexagon
 
 
 def make_rectangle(width, height, radius, pointy=True):
-    # returns a grid centered on Axial(0,0)
-    top = -(height // 2)
+    # returns a grid that starts at (0, 0)
+    top = 0
     # +1 allows to be in centre
-    left = -(width / 2.0) + 1
+    left = 0
     hexes = []
     # iterate over rows
     for y in range(height):
         # and then through the columns
         for x in range(width):
-            # every 2 rows, decrease left by 2
-            axial_pos = Axial(math.floor(left) + x, top + y)
+            # every 2 rows, decrease left by 1
+            axial_pos = Axial(math.ceil(left) + x, top + y)
             if pointy:
                 new_hex = PointyHexagon(axial_pos, radius)
             else:
                 new_hex = FlatHexagon(axial_pos, radius)
             hexes.append(new_hex)
-        left += 0.5
+        left -= 0.5
     return hexes
 
 
@@ -40,8 +40,11 @@ class GridMap(Node):
 
     @property
     def size(self):
-        return Vector2((self.hex_radius * 2) * self.grid_size.x,
-                       (self.hex_radius * 2) * self.grid_size.y)
+        width = (math.sqrt(3) * self.hex_radius) * self.grid_size.x
+        width = int(math.ceil(width))
+        height = ((float(self.grid_size.y) * 0.75) + 0.25) * (self.hex_radius * 2)
+        height = int(math.ceil(height))
+        return Vector2(width, height)
 
     def get_surface(self):
         self.surface = pygame.Surface(self.size, pygame.SRCALPHA)
