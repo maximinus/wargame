@@ -1,14 +1,5 @@
 import math
-
-
-# there are 2 types of hexagon: pointy top or flat top; we will call these non-flat and flat
-class Vec2:
-    def __init__(self, x, y):
-        self.x = x
-        self.y = y
-
-    def __add__(self, other):
-        return Vec2(self.x + other.x, self.y + other.y)
+from pygame.math import Vector2
 
 
 class Axial:
@@ -37,14 +28,13 @@ class Hexagon:
 
     @property
     def center(self):
-        return Vec2(0, 0)
+        return Vector2(0, 0)
 
 
 class PointyHexagon(Hexagon):
     def get_points(self):
         # return the points of the hexagon, from 0 degrees through 360
         pos = self.center
-        points = []
         for i in range(6):
             angle = math.radians((60.0 * i) - 30.0)
-            return Vec2(pos.x + (self.radius * math.cos(angle)), pos.y + (self.radius * math.sin(angle)))
+            return Vector2(pos.x + (self.radius * math.cos(angle)), pos.y + (self.radius * math.sin(angle)))
